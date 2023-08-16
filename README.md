@@ -2,7 +2,9 @@
 
 Terraform module to create and manage a GitLab project.
 
-<!--- BEGIN_TF_DOCS --->
+IMPORTANT: We do not pin modules to versions in our examples. We highly recommend that in your code you pin the version to the exact version you are using so that your infrastructure remains stable.
+
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -35,4 +37,4 @@ Terraform module to create and manage a GitLab project.
 
 No output.
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->
