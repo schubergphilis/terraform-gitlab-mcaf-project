@@ -9,7 +9,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 
 ## Providers
 
@@ -36,12 +36,13 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | The name of the project | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The namespace (group or user) of the project | `string` | n/a | yes |
 | <a name="input_approvals_before_merge"></a> [approvals\_before\_merge](#input\_approvals\_before\_merge) | Number of merge request approvals required for merging | `number` | `1` | no |
-| <a name="input_branch_protection"></a> [branch\_protection](#input\_branch\_protection) | Branch protection settings | <pre>map(object({<br>    push_access_level            = string<br>    merge_access_level           = string<br>    code_owner_approval_required = bool<br>  }))</pre> | `null` | no |
-| <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The default branch for the project | `string` | `"master"` | no |
+| <a name="input_branch_protection"></a> [branch\_protection](#input\_branch\_protection) | Branch protection settings | <pre>map(object({<br>    push_access_level            = optional(string, "no one")<br>    merge_access_level           = optional(string, "developer")<br>    code_owner_approval_required = optional(bool, false)<br>  }))</pre> | `{}` | no |
+| <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The default branch for the project | `string` | `"main"` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description for the GitLab project | `string` | `null` | no |
 | <a name="input_initialize_with_readme"></a> [initialize\_with\_readme](#input\_initialize\_with\_readme) | Create default branch with first commit containing a README.md file | `bool` | `true` | no |
 | <a name="input_issues_enabled"></a> [issues\_enabled](#input\_issues\_enabled) | Enable issue tracking for the project | `bool` | `false` | no |
 | <a name="input_snippets_enabled"></a> [snippets\_enabled](#input\_snippets\_enabled) | Enable snippets for the project | `bool` | `false` | no |
+| <a name="input_use_group_settings"></a> [use\_group\_settings](#input\_use\_group\_settings) | Ignore settings that can also be set on a group level to prevent conflicts | `bool` | `false` | no |
 | <a name="input_visibility"></a> [visibility](#input\_visibility) | Set the GitLab project as public, private or internal | `string` | `"private"` | no |
 | <a name="input_wiki_enabled"></a> [wiki\_enabled](#input\_wiki\_enabled) | Enable wiki for the project | `bool` | `false` | no |
 
