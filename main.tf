@@ -14,7 +14,7 @@ data "gitlab_group" "default" {
 
 resource "gitlab_project" "default" {
   name                   = var.name
-  approvals_before_merge = var.approvals_before_merge
+  approvals_before_merge = var.use_group_settings ? null : var.approvals_before_merge
   default_branch         = var.default_branch
   description            = var.description
   initialize_with_readme = var.initialize_with_readme
@@ -26,7 +26,8 @@ resource "gitlab_project" "default" {
 }
 
 resource "gitlab_branch_protection" "default" {
-  for_each           = local.branch_protection
+  for_each = local.branch_protection
+
   project            = gitlab_project.default.id
   branch             = each.key
   push_access_level  = each.value.push_access_level

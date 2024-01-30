@@ -6,17 +6,17 @@ variable "approvals_before_merge" {
 
 variable "branch_protection" {
   type = map(object({
-    push_access_level            = string
-    merge_access_level           = string
-    code_owner_approval_required = bool
+    push_access_level            = optional(string, "no one")
+    merge_access_level           = optional(string, "developer")
+    code_owner_approval_required = optional(bool, false)
   }))
-  default     = null
+  default     = {}
   description = "Branch protection settings"
 }
 
 variable "default_branch" {
   type        = string
-  default     = "master"
+  default     = "main"
   description = "The default branch for the project"
 }
 
@@ -52,6 +52,12 @@ variable "snippets_enabled" {
   type        = bool
   default     = false
   description = "Enable snippets for the project"
+}
+
+variable "use_group_settings" {
+  type        = bool
+  default     = false
+  description = "Ignore settings that can also be set on a group level to prevent conflicts"
 }
 
 variable "visibility" {
