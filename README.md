@@ -48,5 +48,9 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_id"></a> [id](#output\_id) | GitLab project id |
+| <a name="output_path"></a> [path](#output\_path) | GitLab project path |
+| <a name="output_path_with_namespace"></a> [path\_with\_namespace](#output\_path\_with\_namespace) | GitLab project path with namespace |
 <!-- END_TF_DOCS -->
