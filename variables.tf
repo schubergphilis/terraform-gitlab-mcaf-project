@@ -6,9 +6,26 @@ variable "approvals_before_merge" {
 
 variable "branch_protection" {
   type = map(object({
-    push_access_level            = optional(string, "no one")
-    merge_access_level           = optional(string, "developer")
+    allow_force_push             = optional(bool, false)
     code_owner_approval_required = optional(bool, false)
+    merge_access_level           = optional(string, "developer")
+    push_access_level            = optional(string, "no one")
+    unprotect_access_level       = optional(string)
+
+    allowed_to_merge = optional(object({
+      users  = optional(list(string), [])
+      groups = optional(list(string), [])
+    }), {})
+
+    allowed_to_push = optional(object({
+      users  = optional(list(string), [])
+      groups = optional(list(string), [])
+    }), {})
+
+    allowed_to_unprotect = optional(object({
+      users  = optional(list(string), [])
+      groups = optional(list(string), [])
+    }), {})
   }))
   default     = {}
   description = "Branch protection settings"
