@@ -12,20 +12,13 @@ variable "branch_protection" {
     push_access_level            = optional(string, "no one")
     unprotect_access_level       = optional(string)
 
-    allowed_to_merge = optional(object({
-      users  = optional(list(string), [])
-      groups = optional(list(string), [])
-    }), {})
+    groups_allowed_to_merge     = optional(list(string), [])
+    groups_allowed_to_push      = optional(list(string), [])
+    groups_allowed_to_unprotect = optional(list(string), [])
 
-    allowed_to_push = optional(object({
-      users  = optional(list(string), [])
-      groups = optional(list(string), [])
-    }), {})
-
-    allowed_to_unprotect = optional(object({
-      users  = optional(list(string), [])
-      groups = optional(list(string), [])
-    }), {})
+    users_allowed_to_merge     = optional(list(string), [])
+    users_allowed_to_push      = optional(list(string), [])
+    users_allowed_to_unprotect = optional(list(string), [])
   }))
   default     = {}
   description = "Branch protection settings"

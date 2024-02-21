@@ -6,6 +6,16 @@ locals {
       code_owner_approval_required = false
     }
   }, var.branch_protection)
+
+  // List of groups to look up
+  groups = distinct(flatten([for branch, settings in local.branch_protection :
+    concat(settings.groups_allowed_to_merge, settings.groups_allowed_to_push, settings.groups_allowed_to_unprotect)
+  ]))
+
+  // List of users to look up
+  users = distinct(flatten([for branch, settings in local.branch_protection :
+    concat(settings.users_allowed_to_merge, settings.users_allowed_to_push, settings.users_allowed_to_unprotect)
+  ]))
 }
 
 ################################################################################
@@ -33,40 +43,16 @@ resource "gitlab_project" "default" {
 # Branch protection
 ################################################################################
 
-data "gitlab_user" "allowed_to_merge" {
-  for_each = local.branch_protection.allowed_to_merge.users
+data "gitlab_user" "users" {
+  for_each = local.users
 
   username = each.value
 }
 
-data "gitlab_user" "allowed_to_push" {
-  for_each = local.branch_protection.allowed_to_push.users
+data "gitlab_user" "groups" {
+  for_each = local.groups
 
   username = each.value
-}
-
-data "gitlab_user" "allowed_to_unprotect" {
-  for_each = local.branch_protection.allowed_to_unprotect.users
-
-  username = each.value
-}
-
-data "gitlab_group" "allowed_to_merge" {
-  for_each = local.branch_protection.allowed_to_merge.groups
-
-  full_path = each.value
-}
-
-data "gitlab_group" "allowed_to_push" {
-  for_each = local.branch_protection.allowed_to_push.groups
-
-  full_path = each.value
-}
-
-data "gitlab_group" "allowed_to_unprotect" {
-  for_each = local.branch_protection.allowed_to_unprotect.groups
-
-  full_path = each.value
 }
 
 resource "gitlab_branch_protection" "default" {
@@ -81,50 +67,50 @@ resource "gitlab_branch_protection" "default" {
   unprotect_access_level       = each.value.unprotect_access_level
 
   dynamic "allowed_to_merge" {
-    for_each = each.value.allowed_to_merge.users
+    for_each = each.value.users_allowed_to_merge
 
     content {
-      user_id = data.gitlab_user.allowed_to_merge[allowed_to_merge.value].id
+      user_id = data.gitlab_user.users[allowed_to_merge.value].id
     }
   }
 
   dynamic "allowed_to_merge" {
-    for_each = each.value.allowed_to_merge.groups
+    for_each = each.value.groups_allowed_to_merge
 
     content {
-      group_id = data.gitlab_group.allowed_to_merge[allowed_to_merge.value].id
+      group_id = data.gitlab_group.groups[allowed_to_merge.value].id
     }
   }
 
   dynamic "allowed_to_push" {
-    for_each = each.value.allowed_to_push.users
+    for_each = each.value.users_allowed_to_push
 
     content {
-      user_id = data.gitlab_user.allowed_to_push[allowed_to_push.value].id
+      user_id = data.gitlab_user.users[allowed_to_merge.value].id
     }
   }
 
   dynamic "allowed_to_push" {
-    for_each = each.value.allowed_to_push.groups
+    for_each = each.value.groups_allowed_to_push
 
     content {
-      group_id = data.gitlab_group.allowed_to_push[allowed_to_push.value].id
+      group_id = data.gitlab_group.groups[allowed_to_push.value].id
     }
   }
 
   dynamic "allowed_to_unprotect" {
-    for_each = each.value.allowed_to_unprotect.users
+    for_each = each.value.users_allowed_to_unprotect
 
     content {
-      user_id = data.gitlab_user.allowed_to_unprotect[allowed_to_unprotect.value].id
+      user_id = data.gitlab_user.users[allowed_to_merge.value].id
     }
   }
 
   dynamic "allowed_to_unprotect" {
-    for_each = each.value.allowed_to_unprotect.groups
+    for_each = each.value.groups_allowed_to_unprotect
 
     content {
-      group_id = data.gitlab_group.allowed_to_unprotect[allowed_to_unprotect.value].id
+      group_id = data.gitlab_group.groups[allowed_to_unprotect.value].id
     }
   }
 }
