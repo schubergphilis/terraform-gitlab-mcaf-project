@@ -8,8 +8,8 @@ module "test_project" {
 
   branch_protection = {
     main = {
-      allowed_to_push  = { users = ["user1", "user2"] }
-      allowed_to_merge = { groups = ["foo/bar"] }
+      users_allowed_to_push   = ["user1", "user2"]
+      groups_allowed_to_merge = ["foo/bar"]
     }
   }
 }

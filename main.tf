@@ -7,14 +7,14 @@ locals {
     }
   }, var.branch_protection)
 
-  // List of groups to look up
-  groups = distinct(flatten([for branch, settings in local.branch_protection :
-    concat(settings.groups_allowed_to_merge, settings.groups_allowed_to_push, settings.groups_allowed_to_unprotect)
+  // List of users to look up
+  users = toset(flatten([for branch, settings in local.branch_protection :
+    distinct(concat(settings.users_allowed_to_merge, settings.users_allowed_to_push, settings.users_allowed_to_unprotect))
   ]))
 
-  // List of users to look up
-  users = distinct(flatten([for branch, settings in local.branch_protection :
-    concat(settings.users_allowed_to_merge, settings.users_allowed_to_push, settings.users_allowed_to_unprotect)
+  // List of groups to look up
+  groups = toset(flatten([for branch, settings in local.branch_protection :
+    distinct(concat(settings.groups_allowed_to_merge, settings.groups_allowed_to_push, settings.groups_allowed_to_unprotect))
   ]))
 }
 
@@ -49,10 +49,10 @@ data "gitlab_user" "users" {
   username = each.value
 }
 
-data "gitlab_user" "groups" {
+data "gitlab_group" "groups" {
   for_each = local.groups
 
-  username = each.value
+  full_path = each.value
 }
 
 resource "gitlab_branch_protection" "default" {
@@ -86,7 +86,7 @@ resource "gitlab_branch_protection" "default" {
     for_each = each.value.users_allowed_to_push
 
     content {
-      user_id = data.gitlab_user.users[allowed_to_merge.value].id
+      user_id = data.gitlab_user.users[allowed_to_push.value].id
     }
   }
 
@@ -102,7 +102,7 @@ resource "gitlab_branch_protection" "default" {
     for_each = each.value.users_allowed_to_unprotect
 
     content {
-      user_id = data.gitlab_user.users[allowed_to_merge.value].id
+      user_id = data.gitlab_user.users[allowed_to_unprotect.value].id
     }
   }
 
