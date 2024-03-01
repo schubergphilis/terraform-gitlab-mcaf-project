@@ -48,6 +48,7 @@ No modules.
 | <a name="input_use_group_settings"></a> [use\_group\_settings](#input\_use\_group\_settings) | Ignore settings that can also be set on a group level to prevent conflicts | `bool` | `false` | no |
 | <a name="input_visibility"></a> [visibility](#input\_visibility) | Set the GitLab project as public, private or internal | `string` | `"private"` | no |
 | <a name="input_wiki_enabled"></a> [wiki\_enabled](#input\_wiki\_enabled) | Enable wiki for the project | `bool` | `false` | no |
+| <a name="runner"></a> [runner](#input\_runner) | GitLab Runner | <pre> object({ runner_type = optional(string, "project_type") <br> tag_list = optional(list(string), []) <br> description  = optional(string, null) <br> ssm_create_secret = optional(bool, false) <br> ssm_name_prefix = optional(string, null) <br> ssm_overwrite = optional(bool, false) <br> ssm_tags = optional(map(any), {}) <br> ssm_kms  = optional(string, null)}) </pre> | `{}` | no |
 
 ## Outputs
 
@@ -56,4 +57,5 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | GitLab project id |
 | <a name="output_path"></a> [path](#output\_path) | GitLab project path |
 | <a name="output_path_with_namespace"></a> [path\_with\_namespace](#output\_path\_with\_namespace) | GitLab project path with namespace |
+|
 <!-- END_TF_DOCS -->
