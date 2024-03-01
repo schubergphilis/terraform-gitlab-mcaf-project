@@ -114,3 +114,32 @@ resource "gitlab_branch_protection" "default" {
     }
   }
 }
+
+################################################################################
+# Runner Setup
+################################################################################
+resource "gitlab_user_runner" "runner" {
+  count = var.runner != {} ? 1 : 0
+
+  project_id  = gitlab_project.default.id
+  runner_type = var.runner.runner_type
+  description = var.runner.description
+  tag_list    = var.runner.tag_list
+}
+
+resource "aws_secretsmanager_secret" "runner_secret" {
+  count = var.runner.ssm_create_secret ? 1 : 0
+
+  name                           = var.runner.ssm_name_prefix == null ? var.name : null
+  name_prefix                    = var.runner.ssm_name_prefix
+  force_overwrite_replica_secret = var.runner.ssm_overwrite
+  kms_key_id                     = var.runner.ssm_kms
+  tags                           = var.runner.ssm_tags
+}
+
+resource "aws_secretsmanager_secret_version" "runner_secret_version" {
+  count = var.runner != {} ? 1 : 0
+
+  secret_id     = aws_secretsmanager_secret.runner_secret[0].id
+  secret_string = jsonencode({ token = gitlab_user_runner.runner[0].token })
+}

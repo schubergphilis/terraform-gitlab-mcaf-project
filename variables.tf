@@ -86,3 +86,18 @@ variable "wiki_enabled" {
   default     = false
   description = "Enable wiki for the project"
 }
+
+variable "runner" {
+  type = object({
+    runner_type       = optional(string, "project_type")
+    tag_list          = optional(list(string), [])
+    description       = optional(string, null)
+    ssm_create_secret = optional(bool, false)
+    ssm_name_prefix   = optional(string, null)
+    ssm_overwrite     = optional(bool, false)
+    ssm_tags          = optional(map(any), {})
+    ssm_kms           = optional(string, null)
+  })
+  default     = {}
+  description = "Gitlab runner settings"
+}
