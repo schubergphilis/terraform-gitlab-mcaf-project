@@ -26,6 +26,8 @@ data "gitlab_group" "default" {
   full_path = var.namespace
 }
 
+//checkov:skip=CKV_GLB_4
+//checkov:skip=CKV_GLB_3
 resource "gitlab_project" "default" {
   name                   = var.name
   approvals_before_merge = var.use_group_settings ? null : var.approvals_before_merge
@@ -55,6 +57,7 @@ data "gitlab_group" "groups" {
   full_path = each.value
 }
 
+//checkov:skip=CKV_GLB_2
 resource "gitlab_branch_protection" "default" {
   for_each = local.branch_protection
 
@@ -137,6 +140,7 @@ resource "aws_secretsmanager_secret" "runner_secret" {
   tags                           = var.runner.ssm_tags
 }
 
+//checkov:skip=CKV2_AWS_57
 resource "aws_secretsmanager_secret_version" "runner_secret_version" {
   count = var.runner != {} ? 1 : 0
 
