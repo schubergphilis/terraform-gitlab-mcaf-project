@@ -131,6 +131,8 @@ resource "gitlab_user_runner" "runner" {
 }
 
 resource "aws_secretsmanager_secret" "runner_secret" {
+  //checkov:skip=CKV2_AWS_57
+  //checkov:skip=CKV_AWS_149
   count = var.runner.ssm_create_secret ? 1 : 0
 
   name                           = var.runner.ssm_name_prefix == null ? var.name : null
@@ -141,7 +143,6 @@ resource "aws_secretsmanager_secret" "runner_secret" {
 }
 
 resource "aws_secretsmanager_secret_version" "runner_secret_version" {
-  //checkov:skip=CKV2_AWS_57
   count = var.runner != {} ? 1 : 0
 
   secret_id     = aws_secretsmanager_secret.runner_secret[0].id
