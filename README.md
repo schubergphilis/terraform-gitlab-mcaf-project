@@ -10,12 +10,14 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.37.0 |
 | <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 16.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.37.0 |
 | <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 16.0.0 |
 
 ## Modules
@@ -26,8 +28,11 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_secretsmanager_secret.runner_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.runner_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource |
 | [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
+| [gitlab_user_runner.runner](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/user_runner) | resource |
 | [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
@@ -44,11 +49,11 @@ No modules.
 | <a name="input_description"></a> [description](#input\_description) | A description for the GitLab project | `string` | `null` | no |
 | <a name="input_initialize_with_readme"></a> [initialize\_with\_readme](#input\_initialize\_with\_readme) | Create default branch with first commit containing a README.md file | `bool` | `true` | no |
 | <a name="input_issues_enabled"></a> [issues\_enabled](#input\_issues\_enabled) | Enable issue tracking for the project | `bool` | `false` | no |
+| <a name="input_runner"></a> [runner](#input\_runner) | Gitlab runner settings | <pre>object({<br>    runner_type       = optional(string, "project_type")<br>    tag_list          = optional(list(string), [])<br>    description       = optional(string, null)<br>    ssm_create_secret = optional(bool, false)<br>    ssm_name_prefix   = optional(string, null)<br>    ssm_overwrite     = optional(bool, false)<br>    ssm_tags          = optional(map(any), {})<br>    ssm_kms           = optional(string, null)<br>  })</pre> | `{}` | no |
 | <a name="input_snippets_enabled"></a> [snippets\_enabled](#input\_snippets\_enabled) | Enable snippets for the project | `bool` | `false` | no |
 | <a name="input_use_group_settings"></a> [use\_group\_settings](#input\_use\_group\_settings) | Ignore settings that can also be set on a group level to prevent conflicts | `bool` | `false` | no |
 | <a name="input_visibility"></a> [visibility](#input\_visibility) | Set the GitLab project as public, private or internal | `string` | `"private"` | no |
 | <a name="input_wiki_enabled"></a> [wiki\_enabled](#input\_wiki\_enabled) | Enable wiki for the project | `bool` | `false` | no |
-| <a name="runner"></a> [runner](#input\_runner) | GitLab Runner | <pre> object({ runner_type = optional(string, "project_type") <br> tag_list = optional(list(string), []) <br> description  = optional(string, null) <br> ssm_create_secret = optional(bool, false) <br> ssm_name_prefix = optional(string, null) <br> ssm_overwrite = optional(bool, false) <br> ssm_tags = optional(map(any), {}) <br> ssm_kms  = optional(string, null)}) </pre> | `{}` | no |
 
 ## Outputs
 
@@ -57,5 +62,4 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | GitLab project id |
 | <a name="output_path"></a> [path](#output\_path) | GitLab project path |
 | <a name="output_path_with_namespace"></a> [path\_with\_namespace](#output\_path\_with\_namespace) | GitLab project path with namespace |
-|
 <!-- END_TF_DOCS -->
