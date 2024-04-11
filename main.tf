@@ -69,7 +69,7 @@ data "gitlab_group" "groups" {
 resource "gitlab_branch_protection" "default" {
   for_each = local.branch_protection
 
-  allow_force_push             = try(each.value.allow_force_push, null)
+  allow_force_push             = try(each.value.allow_force_push, false)
   branch                       = each.key
   code_owner_approval_required = each.value.code_owner_approval_required
   merge_access_level           = each.value.merge_access_level
