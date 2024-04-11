@@ -53,6 +53,12 @@ variable "name" {
   description = "The name of the project"
 }
 
+variable "prevent_secrets" {
+  type        = bool
+  default     = false
+  description = "GitLab rejects any files that are likely to contain secrets."
+}
+
 variable "namespace" {
   type        = string
   description = "The namespace (group or user) of the project"

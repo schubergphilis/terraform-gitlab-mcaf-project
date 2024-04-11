@@ -28,6 +28,7 @@ data "gitlab_group" "default" {
 
 resource "gitlab_project" "default" {
   name                   = var.name
+  prevent_secrets        = var.prevent_secrets
   approvals_before_merge = var.use_group_settings ? null : var.approvals_before_merge
   default_branch         = var.default_branch
   description            = var.description
