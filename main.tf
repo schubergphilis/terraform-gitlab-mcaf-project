@@ -28,7 +28,6 @@ data "gitlab_group" "default" {
 
 resource "gitlab_project" "default" {
   name                   = var.name
-  prevent_secrets        = var.prevent_secrets
   approvals_before_merge = var.use_group_settings ? null : var.approvals_before_merge
   default_branch         = var.default_branch
   description            = var.description
@@ -38,6 +37,10 @@ resource "gitlab_project" "default" {
   snippets_enabled       = var.snippets_enabled
   visibility_level       = var.visibility
   wiki_enabled           = var.wiki_enabled
+
+  push_rules {
+    prevent_secrets = var.prevent_secrets
+  }
 }
 
 ################################################################################
