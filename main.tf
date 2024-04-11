@@ -1,9 +1,16 @@
 locals {
   branch_protection = merge({
     (var.default_branch) = {
-      push_access_level            = "no one"
-      merge_access_level           = "developer"
+      allow_force_push             = false
       code_owner_approval_required = false
+      groups_allowed_to_merge      = []
+      groups_allowed_to_push       = []
+      groups_allowed_to_unprotect  = []
+      merge_access_level           = "developer"
+      push_access_level            = "no one"
+      users_allowed_to_merge       = []
+      users_allowed_to_push        = []
+      users_allowed_to_unprotect   = []
     }
   }, var.branch_protection)
 
@@ -62,13 +69,13 @@ data "gitlab_group" "groups" {
 resource "gitlab_branch_protection" "default" {
   for_each = local.branch_protection
 
-  allow_force_push             = each.value.allow_force_push
+  allow_force_push             = try(each.value.allow_force_push, null)
   branch                       = each.key
   code_owner_approval_required = each.value.code_owner_approval_required
   merge_access_level           = each.value.merge_access_level
   project                      = gitlab_project.default.id
   push_access_level            = each.value.push_access_level
-  unprotect_access_level       = each.value.unprotect_access_level
+  unprotect_access_level       = try(each.value.unprotect_access_level, null)
 
   dynamic "allowed_to_merge" {
     for_each = each.value.users_allowed_to_merge
