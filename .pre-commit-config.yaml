@@ -35,6 +35,6 @@ repos:
           - --quiet
           - --compact
           - --skip-check
-          - CKV_GIT_5,CKV_GLB_1,CKV_GLB_2,CKV_GLB_3,CKV_GLB_4,CKV_TF_1
+          - CKV_GIT_5,CKV_GLB_1,CKV_GLB_2,CKV_GLB_4,CKV_TF_1
           - --skip-path
           - examples/*

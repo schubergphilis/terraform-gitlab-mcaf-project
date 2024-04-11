@@ -71,6 +71,21 @@ run "defaults" {
   }
 
   assert {
+    condition     = resource.gitlab_project.default.only_allow_merge_if_all_discussions_are_resolved == false
+    error_message = "Invalid only_allow_merge_if_all_discussions_are_resolved value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project.default.only_allow_merge_if_pipeline_succeeds == false
+    error_message = "Invalid only_allow_merge_if_pipeline_succeeds value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project.default.remove_source_branch_after_merge == false
+    error_message = "Invalid remove_source_branch_after_merge value"
+  }
+
+  assert {
     condition     = resource.gitlab_project.default.wiki_enabled == false
     error_message = "Invalid wiki_enabled value"
   }
@@ -81,7 +96,7 @@ run "defaults" {
   }
 
   assert {
-    condition     = resource.gitlab_project.default.push_rules[0].prevent_secrets == false
+    condition     = resource.gitlab_project.default.push_rules[0].prevent_secrets == true
     error_message = "Invalid prevent_secrets value"
   }
 
@@ -111,15 +126,20 @@ run "complete" {
     name      = "basic-${run.setup.random_string}"
     namespace = "basic-${run.setup.random_string}"
 
-    approvals_before_merge = 2
-    default_branch         = "main"
-    description            = "test project"
-    initialize_with_readme = true
-    issues_enabled         = true
-    prevent_secrets        = true
-    snippets_enabled       = true
-    visibility             = "internal"
-    wiki_enabled           = true
+    approvals_before_merge                           = 2
+    commit_message_regex                             = "Fixed \\d+\\..*"
+    default_branch                                   = "main"
+    description                                      = "test project"
+    initialize_with_readme                           = true
+    issues_enabled                                   = true
+    prevent_secrets                                  = false
+    squash_option                                    = "always"
+    remove_source_branch_after_merge                 = true
+    only_allow_merge_if_all_discussions_are_resolved = true
+    only_allow_merge_if_pipeline_succeeds            = true
+    snippets_enabled                                 = true
+    visibility                                       = "internal"
+    wiki_enabled                                     = true
 
     branch_protection = {
       main = {
@@ -173,12 +193,27 @@ run "complete" {
   }
 
   assert {
+    condition     = resource.gitlab_project.default.only_allow_merge_if_all_discussions_are_resolved == true
+    error_message = "Invalid only_allow_merge_if_all_discussions_are_resolved value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project.default.only_allow_merge_if_pipeline_succeeds == true
+    error_message = "Invalid only_allow_merge_if_pipeline_succeeds value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project.default.remove_source_branch_after_merge == true
+    error_message = "Invalid remove_source_branch_after_merge value"
+  }
+
+  assert {
     condition     = resource.gitlab_project.default.visibility_level == "internal"
     error_message = "Invalid visibility_level value"
   }
 
   assert {
-    condition     = resource.gitlab_project.default.push_rules[0].prevent_secrets == true
+    condition     = resource.gitlab_project.default.push_rules[0].prevent_secrets == false
     error_message = "Invalid prevent_secrets value"
   }
 
@@ -241,4 +276,26 @@ run "complete" {
     condition     = resource.gitlab_branch_protection.default["develop"].allowed_to_push != null
     error_message = "allowed_to_push object should not be null on develop branch"
   }
+}
+
+
+run "failures" {
+  command = plan
+
+  module {
+    source = "./"
+  }
+
+  variables {
+    name      = "basic-${run.setup.random_string}"
+    namespace = "basic-${run.setup.random_string}"
+
+    visibility    = "visible"
+    squash_option = "maybe"
+  }
+
+  expect_failures = [
+    var.visibility,
+    var.squash_option
+  ]
 }
