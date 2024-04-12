@@ -53,6 +53,13 @@ jobs:
         env:
           AWS_DEFAULT_REGION: eu-west-1
 
+      - name: Terraform Test
+        id: test
+        if: ${{ !vars.SKIP_TERRAFORM_TESTS }}
+        run: |
+          terraform init
+          terraform test
+
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request' || always()
         with:
@@ -151,12 +158,16 @@ jobs:
           framework: terraform
           output_format: sarif
           quiet: true
-          skip_check: "CKV_GIT_5,CKV_GLB_1,CKV_TF_1"
+          skip_check: "CKV_GIT_5,CKV_GLB_1,CKV_GLB_2,CKV_GLB_3,CKV_GLB_4,CKV_TF_1"
           soft_fail: false
+          skip_path: "examples/*"
 
 ### SKIP REASON ###
 # Check | Description | Reason
 
 # CKV_GIT_5 | Ensure GitHub pull requests have at least 2 approvals | We strive for at least 1 approval
 # CKV_GLB_1 | Ensure at least two approving reviews are required to merge a GitLab MR | We strive for at least 1 approval
+# CKV_GLB_2 | Force Push is dissalowed by default as shown in the tests
+# CKV_GLB_3 | "Ensure GitLab prevent secrets is enabled", disabled for backwards compatibility
+# CKV_GLB_4 | "Ensure GitLab commits are signed", team decision so disabled in module
 # CKV_TF_1 | Ensure Terraform module sources use a commit hash | We think this check is too restrictive and that versioning should be preferred over commit hash
