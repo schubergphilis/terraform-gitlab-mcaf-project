@@ -12,7 +12,6 @@ module "test_project" {
   description                                      = "test project"
   initialize_with_readme                           = true
   issues_enabled                                   = true
-  prevent_secrets                                  = false
   snippets_enabled                                 = true
   squash_option                                    = "always"
   remove_source_branch_after_merge                 = true
