@@ -6,15 +6,19 @@ module "test_project" {
   name      = "test"
   namespace = "test"
 
-  approvals_before_merge = 2
-  default_branch         = "main"
-  description            = "test project"
-  initialize_with_readme = true
-  issues_enabled         = true
-  prevent_secrets        = true
-  snippets_enabled       = true
-  visibility             = "internal"
-  wiki_enabled           = true
+  approvals_before_merge                           = 2
+  commit_message_regex                             = "Fixed \\d+\\..*"
+  default_branch                                   = "main"
+  description                                      = "test project"
+  initialize_with_readme                           = true
+  issues_enabled                                   = true
+  snippets_enabled                                 = true
+  squash_option                                    = "always"
+  remove_source_branch_after_merge                 = true
+  visibility                                       = "internal"
+  only_allow_merge_if_all_discussions_are_resolved = true
+  only_allow_merge_if_pipeline_succeeds            = true
+  wiki_enabled                                     = true
 
   branch_protection = {
     main = {

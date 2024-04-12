@@ -24,6 +24,12 @@ variable "branch_protection" {
   description = "Branch protection settings"
 }
 
+variable "commit_message_regex" {
+  type        = string
+  default     = null
+  description = "A regex pattern that a commit message must match in order to be accepted."
+}
+
 variable "default_branch" {
   type        = string
   default     = "main"
@@ -53,9 +59,21 @@ variable "name" {
   description = "The name of the project"
 }
 
-variable "prevent_secrets" {
+variable "only_allow_merge_if_all_discussions_are_resolved" {
   type        = bool
   default     = false
+  description = "Set to true if you want allow merges only if all discussions are resolved."
+}
+
+variable "only_allow_merge_if_pipeline_succeeds" {
+  type        = bool
+  default     = false
+  description = "Set to true if you want allow merges only if a pipeline succeeds."
+}
+
+variable "prevent_secrets" {
+  type        = bool
+  default     = true
   description = "GitLab rejects any files that are likely to contain secrets."
 }
 
@@ -64,10 +82,27 @@ variable "namespace" {
   description = "The namespace (group or user) of the project"
 }
 
+variable "remove_source_branch_after_merge" {
+  type        = bool
+  default     = false
+  description = "Enable \"Delete source branch\" option by default for all new merge requests."
+}
+
 variable "snippets_enabled" {
   type        = bool
   default     = false
   description = "Enable snippets for the project"
+}
+
+variable "squash_option" {
+  type        = string
+  default     = "default_off"
+  description = "Squash commits when merge request"
+
+  validation {
+    condition     = contains(["default_off", "default_on", "never", "always"], var.squash_option)
+    error_message = "The visibility value must be either \"never\",\"always\",\"default_on\" or \"default_off\"."
+  }
 }
 
 variable "use_group_settings" {
