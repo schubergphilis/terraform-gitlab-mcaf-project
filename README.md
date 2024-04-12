@@ -7,15 +7,15 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name                                                                      | Version   |
-| ------------------------------------------------------------------------- | --------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0  |
-| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab)          | >= 16.0.0 |
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 16.0.0 |
 
 ## Providers
 
-| Name                                                       | Version   |
-| ---------------------------------------------------------- | --------- |
+| Name | Version |
+|------|---------|
 | <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 16.0.0 |
 
 ## Modules
@@ -24,13 +24,13 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                | Type        |
-| ----------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource    |
-| [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project)                     | resource    |
-| [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                      | data source |
-| [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                       | data source |
-| [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user)                          | data source |
+| Name | Type |
+|------|------|
+| [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource |
+| [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
+| [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
 
 ## Inputs
 
@@ -48,6 +48,7 @@ No modules.
 | <a name="input_only_allow_merge_if_all_discussions_are_resolved"></a> [only\_allow\_merge\_if\_all\_discussions\_are\_resolved](#input\_only\_allow\_merge\_if\_all\_discussions\_are\_resolved) | Set to true if you want allow merges only if all discussions are resolved. | `bool` | `false` | no |
 | <a name="input_only_allow_merge_if_pipeline_succeeds"></a> [only\_allow\_merge\_if\_pipeline\_succeeds](#input\_only\_allow\_merge\_if\_pipeline\_succeeds) | Set to true if you want allow merges only if a pipeline succeeds. | `bool` | `false` | no |
 | <a name="input_prevent_secrets"></a> [prevent\_secrets](#input\_prevent\_secrets) | GitLab rejects any files that are likely to contain secrets. | `bool` | `true` | no |
+| <a name="input_reject_unsigned_commits"></a> [reject\_unsigned\_commits](#input\_reject\_unsigned\_commits) | GitLab rejects any unsigned commits. | `bool` | `true` | no |
 | <a name="input_remove_source_branch_after_merge"></a> [remove\_source\_branch\_after\_merge](#input\_remove\_source\_branch\_after\_merge) | Enable "Delete source branch" option by default for all new merge requests. | `bool` | `false` | no |
 | <a name="input_snippets_enabled"></a> [snippets\_enabled](#input\_snippets\_enabled) | Enable snippets for the project | `bool` | `false` | no |
 | <a name="input_squash_option"></a> [squash\_option](#input\_squash\_option) | Squash commits when merge request | `string` | `"default_off"` | no |
@@ -57,9 +58,9 @@ No modules.
 
 ## Outputs
 
-| Name                                                                                              | Description                        |
-| ------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| <a name="output_id"></a> [id](#output\_id)                                                        | GitLab project id                  |
-| <a name="output_path"></a> [path](#output\_path)                                                  | GitLab project path                |
+| Name | Description |
+|------|-------------|
+| <a name="output_id"></a> [id](#output\_id) | GitLab project id |
+| <a name="output_path"></a> [path](#output\_path) | GitLab project path |
 | <a name="output_path_with_namespace"></a> [path\_with\_namespace](#output\_path\_with\_namespace) | GitLab project path with namespace |
 <!-- END_TF_DOCS -->
