@@ -81,7 +81,7 @@ run "defaults" {
   }
 
   assert {
-    condition     = resource.gitlab_project.default.remove_source_branch_after_merge == false
+    condition     = resource.gitlab_project.default.remove_source_branch_after_merge == true
     error_message = "Invalid remove_source_branch_after_merge value"
   }
 
@@ -134,7 +134,7 @@ run "complete" {
     issues_enabled                                   = true
     prevent_secrets                                  = false
     squash_option                                    = "always"
-    remove_source_branch_after_merge                 = true
+    remove_source_branch_after_merge                 = false
     only_allow_merge_if_all_discussions_are_resolved = true
     only_allow_merge_if_pipeline_succeeds            = true
     snippets_enabled                                 = true
@@ -203,7 +203,7 @@ run "complete" {
   }
 
   assert {
-    condition     = resource.gitlab_project.default.remove_source_branch_after_merge == true
+    condition     = resource.gitlab_project.default.remove_source_branch_after_merge == false
     error_message = "Invalid remove_source_branch_after_merge value"
   }
 
