@@ -90,7 +90,7 @@ variable "reject_unsigned_commits" {
 
 variable "remove_source_branch_after_merge" {
   type        = bool
-  default     = false
+  default     = true
   description = "Enable \"Delete source branch\" option by default for all new merge requests."
 }
 

@@ -14,7 +14,6 @@ module "test_project" {
   issues_enabled                                   = true
   snippets_enabled                                 = true
   squash_option                                    = "always"
-  remove_source_branch_after_merge                 = true
   visibility                                       = "internal"
   only_allow_merge_if_all_discussions_are_resolved = true
   only_allow_merge_if_pipeline_succeeds            = true
