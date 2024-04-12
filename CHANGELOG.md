@@ -5,6 +5,22 @@ All notable changes to this project will automatically be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.4.0 - 2024-04-12
+
+### What's Changed
+
+#### 🚀 Features
+
+* feat: add security best practice CKV_GLB_4 (#11) @Plork
+* feat: add additional settings and change default for prevent_secrets (#9) @Plork
+* feature: add prevent_secrets variable to project (#8) @Plork
+
+#### 🐛 Bug Fixes
+
+* fix: update actions (#10) @marwinbaumannsbp
+
+**Full Changelog**: https://github.com/schubergphilis/terraform-gitlab-mcaf-project/compare/v0.3.0...v0.4.0
+
 ## v0.3.0 - 2024-02-22
 
 ### What's Changed
