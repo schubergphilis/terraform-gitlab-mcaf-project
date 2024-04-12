@@ -49,7 +49,7 @@ No modules.
 | <a name="input_only_allow_merge_if_pipeline_succeeds"></a> [only\_allow\_merge\_if\_pipeline\_succeeds](#input\_only\_allow\_merge\_if\_pipeline\_succeeds) | Set to true if you want allow merges only if a pipeline succeeds. | `bool` | `false` | no |
 | <a name="input_prevent_secrets"></a> [prevent\_secrets](#input\_prevent\_secrets) | GitLab rejects any files that are likely to contain secrets. | `bool` | `true` | no |
 | <a name="input_reject_unsigned_commits"></a> [reject\_unsigned\_commits](#input\_reject\_unsigned\_commits) | GitLab rejects any unsigned commits. | `bool` | `true` | no |
-| <a name="input_remove_source_branch_after_merge"></a> [remove\_source\_branch\_after\_merge](#input\_remove\_source\_branch\_after\_merge) | Enable "Delete source branch" option by default for all new merge requests. | `bool` | `false` | no |
+| <a name="input_remove_source_branch_after_merge"></a> [remove\_source\_branch\_after\_merge](#input\_remove\_source\_branch\_after\_merge) | Enable "Delete source branch" option by default for all new merge requests. | `bool` | `true` | no |
 | <a name="input_snippets_enabled"></a> [snippets\_enabled](#input\_snippets\_enabled) | Enable snippets for the project | `bool` | `false` | no |
 | <a name="input_squash_option"></a> [squash\_option](#input\_squash\_option) | Squash commits when merge request | `string` | `"default_off"` | no |
 | <a name="input_use_group_settings"></a> [use\_group\_settings](#input\_use\_group\_settings) | Ignore settings that can also be set on a group level to prevent conflicts | `bool` | `false` | no |
