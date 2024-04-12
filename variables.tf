@@ -82,6 +82,12 @@ variable "namespace" {
   description = "The namespace (group or user) of the project"
 }
 
+variable "reject_unsigned_commits" {
+  type        = bool
+  default     = true
+  description = "GitLab rejects any unsigned commits."
+}
+
 variable "remove_source_branch_after_merge" {
   type        = bool
   default     = false

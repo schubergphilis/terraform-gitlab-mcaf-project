@@ -7,15 +7,15 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 16.0.0 |
+| Name                                                                      | Version   |
+| ------------------------------------------------------------------------- | --------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0  |
+| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab)          | >= 16.0.0 |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
+| Name                                                       | Version   |
+| ---------------------------------------------------------- | --------- |
 | <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 16.0.0 |
 
 ## Modules
@@ -24,13 +24,13 @@ No modules.
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource |
-| [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
-| [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
-| [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
-| [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
+| Name                                                                                                                                | Type        |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource    |
+| [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project)                     | resource    |
+| [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                      | data source |
+| [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                       | data source |
+| [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user)                          | data source |
 
 ## Inputs
 
@@ -57,9 +57,9 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_id"></a> [id](#output\_id) | GitLab project id |
-| <a name="output_path"></a> [path](#output\_path) | GitLab project path |
+| Name                                                                                              | Description                        |
+| ------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| <a name="output_id"></a> [id](#output\_id)                                                        | GitLab project id                  |
+| <a name="output_path"></a> [path](#output\_path)                                                  | GitLab project path                |
 | <a name="output_path_with_namespace"></a> [path\_with\_namespace](#output\_path\_with\_namespace) | GitLab project path with namespace |
 <!-- END_TF_DOCS -->

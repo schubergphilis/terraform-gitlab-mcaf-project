@@ -50,8 +50,9 @@ resource "gitlab_project" "default" {
   wiki_enabled                                     = var.wiki_enabled
 
   push_rules {
-    prevent_secrets      = var.prevent_secrets
-    commit_message_regex = var.commit_message_regex
+    commit_message_regex    = var.commit_message_regex
+    prevent_secrets         = var.prevent_secrets
+    reject_unsigned_commits = var.reject_unsigned_commits
   }
 }
 
@@ -74,6 +75,7 @@ data "gitlab_group" "groups" {
 resource "gitlab_branch_protection" "default" {
   for_each = local.branch_protection
 
+  #checkov:skip=CKV_GLB_2: False positive, default is true
   allow_force_push             = try(each.value.allow_force_push, false)
   branch                       = each.key
   code_owner_approval_required = each.value.code_owner_approval_required
