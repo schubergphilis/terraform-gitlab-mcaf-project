@@ -28,8 +28,12 @@ No modules.
 |------|------|
 | [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource |
 | [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
+| [gitlab_project_approval_rule.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_approval_rule) | resource |
+| [gitlab_project_level_mr_approvals.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_level_mr_approvals) | resource |
 | [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_group.project_approval_rule_groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_user.project_approval_rule_users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
 | [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
 
 ## Inputs
@@ -45,9 +49,11 @@ No modules.
 | <a name="input_description"></a> [description](#input\_description) | A description for the GitLab project | `string` | `null` | no |
 | <a name="input_initialize_with_readme"></a> [initialize\_with\_readme](#input\_initialize\_with\_readme) | Create default branch with first commit containing a README.md file | `bool` | `true` | no |
 | <a name="input_issues_enabled"></a> [issues\_enabled](#input\_issues\_enabled) | Enable issue tracking for the project | `bool` | `false` | no |
+| <a name="input_merge_request_approval_rule"></a> [merge\_request\_approval\_rule](#input\_merge\_request\_approval\_rule) | Allows to manage the lifecycle of a Merge Request-level approval rule. | <pre>object({<br>    disable_overriding_approvers_per_merge_request = optional(bool, false)<br>    merge_requests_author_approval                 = optional(bool, false)<br>    merge_requests_disable_committers_approval     = optional(bool, false)<br>    reset_approvals_on_push                        = optional(bool, true)<br>  })</pre> | `{}` | no |
 | <a name="input_only_allow_merge_if_all_discussions_are_resolved"></a> [only\_allow\_merge\_if\_all\_discussions\_are\_resolved](#input\_only\_allow\_merge\_if\_all\_discussions\_are\_resolved) | Set to true if you want allow merges only if all discussions are resolved. | `bool` | `false` | no |
 | <a name="input_only_allow_merge_if_pipeline_succeeds"></a> [only\_allow\_merge\_if\_pipeline\_succeeds](#input\_only\_allow\_merge\_if\_pipeline\_succeeds) | Set to true if you want allow merges only if a pipeline succeeds. | `bool` | `false` | no |
 | <a name="input_prevent_secrets"></a> [prevent\_secrets](#input\_prevent\_secrets) | GitLab rejects any files that are likely to contain secrets. | `bool` | `true` | no |
+| <a name="input_project_approval_rule"></a> [project\_approval\_rule](#input\_project\_approval\_rule) | Allows to manage the lifecycle of a project-level approval rule. | <pre>object({<br>    name                              = optional(string, "project approval rule")<br>    applies_to_all_protected_branches = optional(bool, true)<br>    approvals_required                = optional(number, 1)<br>    groups                            = optional(list(string), [])<br>    protected_branches                = optional(list(string), null)<br>    users                             = optional(list(string), [])<br>  })</pre> | `{}` | no |
 | <a name="input_reject_unsigned_commits"></a> [reject\_unsigned\_commits](#input\_reject\_unsigned\_commits) | GitLab rejects any unsigned commits. | `bool` | `true` | no |
 | <a name="input_remove_source_branch_after_merge"></a> [remove\_source\_branch\_after\_merge](#input\_remove\_source\_branch\_after\_merge) | Enable "Delete source branch" option by default for all new merge requests. | `bool` | `true` | no |
 | <a name="input_snippets_enabled"></a> [snippets\_enabled](#input\_snippets\_enabled) | Enable snippets for the project | `bool` | `false` | no |
