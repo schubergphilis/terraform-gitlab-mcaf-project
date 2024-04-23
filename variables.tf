@@ -24,6 +24,54 @@ variable "branch_protection" {
   description = "Branch protection settings"
 }
 
+variable "merge_request_approval_rule" {
+  type = object({
+    disable_overriding_approvers_per_merge_request = optional(bool, false)
+    merge_requests_author_approval                 = optional(bool, false)
+    merge_requests_disable_committers_approval     = optional(bool, false)
+    reset_approvals_on_push                        = optional(bool, true)
+  })
+  default     = {}
+  description = "Allows to manage the lifecycle of a Merge Request-level approval rule."
+}
+
+variable "project_approval_rule" {
+  type = object({
+    name                              = optional(string, "project approval rule")
+    applies_to_all_protected_branches = optional(bool, true)
+    approvals_required                = optional(number, 1)
+    groups                            = optional(list(string), [])
+    protected_branches                = optional(list(string), null)
+    users                             = optional(list(string), [])
+  })
+  default     = {}
+  description = "Allows to manage the lifecycle of a project-level approval rule."
+
+  validation {
+    condition     = var.project_approval_rule.applies_to_all_protected_branches == false || var.project_approval_rule.protected_branches == null
+    error_message = "Only one of either applies_to_all_protected_branches or protected_branches may be set."
+  }
+}
+
+variable "cicd_variables" {
+  type = map(object({
+    value         = string
+    protected     = bool
+    masked        = optional(bool, false)
+    raw           = optional(bool, false)
+    variable_type = optional(string, "env_var")
+  }))
+  default     = {}
+  description = "CICD variables accessable during pipeline runs."
+
+  validation {
+    condition = alltrue([
+      for v in var.cicd_variables : v.variable_type == "env_var" || v.variable_type == "file"
+    ])
+    error_message = "The variable_type must be either 'env_var' or 'file'."
+  }
+}
+
 variable "commit_message_regex" {
   type        = string
   default     = null
@@ -59,6 +107,11 @@ variable "name" {
   description = "The name of the project"
 }
 
+variable "namespace" {
+  type        = string
+  description = "The namespace (group or user) of the project"
+}
+
 variable "only_allow_merge_if_all_discussions_are_resolved" {
   type        = bool
   default     = false
@@ -75,11 +128,6 @@ variable "prevent_secrets" {
   type        = bool
   default     = true
   description = "GitLab rejects any files that are likely to contain secrets."
-}
-
-variable "namespace" {
-  type        = string
-  description = "The namespace (group or user) of the project"
 }
 
 variable "reject_unsigned_commits" {

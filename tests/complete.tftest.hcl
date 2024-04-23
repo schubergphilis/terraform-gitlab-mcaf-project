@@ -119,6 +119,41 @@ run "defaults" {
     condition     = resource.gitlab_branch_protection.default["main"].code_owner_approval_required == false
     error_message = "Code owner approval should not be required"
   }
+
+  assert {
+    condition     = resource.gitlab_project_approval_rule.default.approvals_required == 1
+    error_message = "Invalid approvals_required value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_approval_rule.default.name == "project approval rule"
+    error_message = "Invalid project approval rule name"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_approval_rule.default.applies_to_all_protected_branches == true
+    error_message = "Invalid applies_to_all_protected_branches value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.disable_overriding_approvers_per_merge_request == false
+    error_message = "Invalid disable_overriding_approvers_per_merge_request value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_author_approval == false
+    error_message = "Invalid merge_requests_author_approval value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_disable_committers_approval == false
+    error_message = "Invalid merge_requests_disable_committers_approval value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.reset_approvals_on_push == true
+    error_message = "Invalid reset_approvals_on_push value"
+  }
 }
 
 run "complete" {
@@ -158,6 +193,22 @@ run "complete" {
         users_allowed_to_push        = ["user2"]
         groups_allowed_to_merge      = ["foo/group2"]
       }
+    }
+
+    merge_request_approval_rule = {
+      disable_overriding_approvers_per_merge_request = true
+      merge_requests_author_approval                 = true
+      merge_requests_disable_committers_approval     = true
+      reset_approvals_on_push                        = false
+    }
+
+    project_approval_rule = {
+      name                              = "project approval rule"
+      approvals_required                = 10
+      applies_to_all_protected_branches = false
+      users                             = ["user1"]
+      groups                            = ["foo/group1"]
+      protected_branches                = ["main"]
     }
   }
 
@@ -276,8 +327,37 @@ run "complete" {
     condition     = resource.gitlab_branch_protection.default["develop"].allowed_to_push != null
     error_message = "allowed_to_push object should not be null on develop branch"
   }
-}
 
+  assert {
+    condition     = resource.gitlab_project_approval_rule.default.approvals_required == 10
+    error_message = "Invalid approvals_required value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_approval_rule.default.applies_to_all_protected_branches == false
+    error_message = "Invalid applies_to_all_protected_branches value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.disable_overriding_approvers_per_merge_request == true
+    error_message = "Invalid disable_overriding_approvers_per_merge_request value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_author_approval == true
+    error_message = "Invalid merge_requests_author_approval value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_disable_committers_approval == true
+    error_message = "Invalid merge_requests_disable_committers_approval value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_level_mr_approvals.default.reset_approvals_on_push == false
+    error_message = "Invalid reset_approvals_on_push value"
+  }
+}
 
 run "failures" {
   command = plan
@@ -292,10 +372,20 @@ run "failures" {
 
     visibility    = "visible"
     squash_option = "maybe"
+
+    project_approval_rule = {
+      name                              = "project approval rule"
+      approvals_required                = 1
+      applies_to_all_protected_branches = true
+      users                             = ["user1"]
+      groups                            = ["foo/group1"]
+      protected_branches                = ["main"]
+    }
   }
 
   expect_failures = [
     var.visibility,
-    var.squash_option
+    var.squash_option,
+    var.project_approval_rule
   ]
 }

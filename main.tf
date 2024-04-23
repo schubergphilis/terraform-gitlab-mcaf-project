@@ -56,6 +56,49 @@ resource "gitlab_project" "default" {
   }
 }
 
+resource "gitlab_project_variable" "default" {
+  for_each = var.cicd_variables
+
+  project       = gitlab_project.default.id
+  key           = each.key
+  value         = each.value.value
+  protected     = each.value.protected
+  masked        = each.value.masked
+  raw           = each.value.raw
+  variable_type = each.value.variable_type
+  description   = each.value.variable_type
+}
+
+resource "gitlab_project_level_mr_approvals" "default" {
+  project                                        = gitlab_project.default.id
+  reset_approvals_on_push                        = var.merge_request_approval_rule.reset_approvals_on_push
+  disable_overriding_approvers_per_merge_request = var.merge_request_approval_rule.disable_overriding_approvers_per_merge_request
+  merge_requests_author_approval                 = var.merge_request_approval_rule.merge_requests_author_approval
+  merge_requests_disable_committers_approval     = var.merge_request_approval_rule.merge_requests_disable_committers_approval
+}
+
+data "gitlab_user" "project_approval_rule_users" {
+  for_each = try(toset(var.project_approval_rule.users), {})
+
+  username = each.value
+}
+
+data "gitlab_group" "project_approval_rule_groups" {
+  for_each = try(toset(var.project_approval_rule.groups), {})
+
+  full_path = each.value
+}
+
+resource "gitlab_project_approval_rule" "default" {
+  project                           = gitlab_project.default.id
+  name                              = var.project_approval_rule.name
+  approvals_required                = var.project_approval_rule.approvals_required
+  applies_to_all_protected_branches = var.project_approval_rule.applies_to_all_protected_branches
+  protected_branch_ids              = try([for branch in var.project_approval_rule.protected_branches : gitlab_branch_protection.default[branch].id], null)
+  user_ids                          = try(data.gitlab_user.project_approval_rule_users[*].id, null)
+  group_ids                         = try(data.gitlab_group.project_approval_rule_groups[*].id, null)
+}
+
 ################################################################################
 # Branch protection
 ################################################################################
