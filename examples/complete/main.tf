@@ -53,4 +53,16 @@ module "test_project" {
     groups                            = ["foo/group1"]
     protected_branches                = ["main"]
   }
+
+  cicd_variables = {
+    api_token = {
+      value     = "123"
+      protected = true
+      masked    = true
+    },
+    DEBUG = {
+      value     = false
+      protected = false
+    }
+  }
 }

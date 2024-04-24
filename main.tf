@@ -56,6 +56,19 @@ resource "gitlab_project" "default" {
   }
 }
 
+resource "gitlab_project_variable" "default" {
+  for_each = var.cicd_variables
+
+  project       = gitlab_project.default.id
+  key           = each.key
+  value         = each.value.value
+  protected     = each.value.protected
+  masked        = each.value.masked
+  raw           = each.value.raw
+  variable_type = each.value.variable_type
+  description   = each.value.variable_type
+}
+
 resource "gitlab_project_level_mr_approvals" "default" {
   project                                        = gitlab_project.default.id
   reset_approvals_on_push                        = var.merge_request_approval_rule.reset_approvals_on_push

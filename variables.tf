@@ -51,7 +51,25 @@ variable "project_approval_rule" {
     condition     = var.project_approval_rule.applies_to_all_protected_branches == false || var.project_approval_rule.protected_branches == null
     error_message = "Only one of either applies_to_all_protected_branches or protected_branches may be set."
   }
+}
 
+variable "cicd_variables" {
+  type = map(object({
+    value         = string
+    protected     = bool
+    masked        = optional(bool, false)
+    raw           = optional(bool, false)
+    variable_type = optional(string, "env_var")
+  }))
+  default     = {}
+  description = "CICD variables accessable during pipeline runs."
+
+  validation {
+    condition = alltrue([
+      for v in var.cicd_variables : v.variable_type == "env_var" || v.variable_type == "file"
+    ])
+    error_message = "The variable_type must be either 'env_var' or 'file'."
+  }
 }
 
 variable "commit_message_regex" {

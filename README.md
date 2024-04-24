@@ -30,6 +30,7 @@ No modules.
 | [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
 | [gitlab_project_approval_rule.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_approval_rule) | resource |
 | [gitlab_project_level_mr_approvals.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_level_mr_approvals) | resource |
+| [gitlab_project_variable.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_variable) | resource |
 | [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_group.project_approval_rule_groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
@@ -44,6 +45,7 @@ No modules.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The namespace (group or user) of the project | `string` | n/a | yes |
 | <a name="input_approvals_before_merge"></a> [approvals\_before\_merge](#input\_approvals\_before\_merge) | Number of merge request approvals required for merging | `number` | `1` | no |
 | <a name="input_branch_protection"></a> [branch\_protection](#input\_branch\_protection) | Branch protection settings | <pre>map(object({<br>    allow_force_push             = optional(bool, false)<br>    code_owner_approval_required = optional(bool, false)<br>    merge_access_level           = optional(string, "developer")<br>    push_access_level            = optional(string, "no one")<br>    unprotect_access_level       = optional(string)<br><br>    groups_allowed_to_merge     = optional(list(string), [])<br>    groups_allowed_to_push      = optional(list(string), [])<br>    groups_allowed_to_unprotect = optional(list(string), [])<br><br>    users_allowed_to_merge     = optional(list(string), [])<br>    users_allowed_to_push      = optional(list(string), [])<br>    users_allowed_to_unprotect = optional(list(string), [])<br>  }))</pre> | `{}` | no |
+| <a name="input_cicd_variables"></a> [cicd\_variables](#input\_cicd\_variables) | CICD variables accessable during pipeline runs. | <pre>map(object({<br>    value         = string<br>    protected     = bool<br>    masked        = optional(bool, false)<br>    raw           = optional(bool, false)<br>    variable_type = optional(string, "env_var")<br>  }))</pre> | `{}` | no |
 | <a name="input_commit_message_regex"></a> [commit\_message\_regex](#input\_commit\_message\_regex) | A regex pattern that a commit message must match in order to be accepted. | `string` | `null` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The default branch for the project | `string` | `"main"` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description for the GitLab project | `string` | `null` | no |
