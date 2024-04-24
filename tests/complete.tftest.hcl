@@ -210,6 +210,25 @@ run "complete" {
       groups                            = ["foo/group1"]
       protected_branches                = ["main"]
     }
+
+    cicd_variables = {
+      VAR1 = {
+        value         = "value1",
+        protected     = false,
+        masked        = false,
+        raw           = false,
+        variable_type = "file",
+        description   = "Test variable 1"
+      },
+      VAR2 = {
+        value         = "value2",
+        protected     = true,
+        masked        = true,
+        raw           = false,
+        variable_type = "env_var",
+        description   = "Test variable 2"
+      }
+    }
   }
 
   module {
@@ -357,6 +376,31 @@ run "complete" {
     condition     = resource.gitlab_project_level_mr_approvals.default.reset_approvals_on_push == false
     error_message = "Invalid reset_approvals_on_push value"
   }
+
+  assert {
+    condition     = resource.gitlab_project_variable.default["VAR1"].value != ""
+    error_message = "Variable VAR1 shouldn't be empty"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_variable.default["VAR1"].protected == false
+    error_message = "Variable VAR1 shouldn't be protected"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_variable.default["VAR2"].value != ""
+    error_message = "Variable VAR2 shouldn't be protected"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_variable.default["VAR2"].masked == true
+    error_message = "Variable VAR2 must be protected and masked"
+  }
+
+  assert {
+    condition     = resource.gitlab_project_variable.default["VAR2"].protected == true
+    error_message = "Variable VAR2 must be protected and masked"
+  }
 }
 
 run "failures" {
@@ -381,11 +425,26 @@ run "failures" {
       groups                            = ["foo/group1"]
       protected_branches                = ["main"]
     }
+    cicd_variables = {
+      VAR1 = {
+        value         = "value1",
+        variable_type = "wrong_input",
+        protected     = false,
+        description   = "Test variable 1"
+      },
+      VAR2 = {
+        value         = "value2",
+        protected     = true,
+        masked        = true,
+        variable_type = "env_var",
+      }
+    }
   }
 
   expect_failures = [
     var.visibility,
     var.squash_option,
-    var.project_approval_rule
+    var.project_approval_rule,
+    var.cicd_variables["VAR1"].variable_type
   ]
 }
