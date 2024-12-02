@@ -181,3 +181,16 @@ variable "wiki_enabled" {
   default     = false
   description = "Enable wiki for the project"
 }
+
+variable "pipeline_schedule" {
+  type = object({
+    cron        = string
+    description = optional(string)
+    ref         = optional(string)
+  })
+  default = {
+    cron        = null
+    description = null
+    ref         = "main"
+  }
+}

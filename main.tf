@@ -175,3 +175,21 @@ resource "gitlab_branch_protection" "default" {
     }
   }
 }
+
+################################################################################
+# Pipeline schedule
+################################################################################
+resource "gitlab_pipeline_schedule" "default" {
+  count       = var.pipeline_schedule != null ? 1 : 0
+  project     = gitlab_project.default.id
+  description = var.pipeline_schedule.description
+  ref         = var.pipeline_schedule.ref
+  cron        = var.pipeline_schedule.cron
+
+  lifecycle {
+    precondition {
+      condition     = can(regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|\\*)$", var.pipeline_schedule.cron))
+      error_message = "The cron expression is not valid. It should be in the format '0 1 * * *'."
+    }
+  }
+}
