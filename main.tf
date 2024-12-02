@@ -180,11 +180,15 @@ resource "gitlab_branch_protection" "default" {
 # Pipeline schedule
 ################################################################################
 resource "gitlab_pipeline_schedule" "default" {
-  count       = var.pipeline_schedule.cron != null ? 1 : 0
-  project     = gitlab_project.default.id
-  description = var.pipeline_schedule.description
-  ref         = var.pipeline_schedule.ref
-  cron        = var.pipeline_schedule.cron
+  count    = var.pipeline_schedule.cron != null ? 1 : 0
+  activate = var.pipeline_schedule.activate
+
+  project        = gitlab_project.default.id
+  description    = var.pipeline_schedule.description
+  ref            = var.pipeline_schedule.ref
+  cron           = var.pipeline_schedule.cron
+  cron_timezone  = var.pipeline_schedule.cron_timezone
+  take_ownership = var.pipeline_schedule.take_ownership
 
   lifecycle {
     precondition {
