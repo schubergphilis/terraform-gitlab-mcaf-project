@@ -4,6 +4,18 @@ variable "approvals_before_merge" {
   description = "Number of merge request approvals required for merging"
 }
 
+variable "ci_config_path" {
+  type        = string
+  default     = ".ci-gitlab.yml"
+  description = "Custom Path to CI config file."
+}
+
+variable "ci_default_git_depth " {
+  type        = number
+  default     = 1
+  description = "Default number of revisions for shallow cloning."
+}
+
 variable "branch_protection" {
   type = map(object({
     allow_force_push             = optional(bool, false)

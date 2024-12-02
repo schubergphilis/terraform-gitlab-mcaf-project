@@ -36,6 +36,8 @@ data "gitlab_group" "default" {
 resource "gitlab_project" "default" {
   name                                             = var.name
   approvals_before_merge                           = var.use_group_settings ? null : var.approvals_before_merge
+  ci_config_path                                   = var.ci_config_path
+  ci_default_git_depth                             = var.ci_default_git_depth
   default_branch                                   = var.default_branch
   description                                      = var.description
   initialize_with_readme                           = var.initialize_with_readme
