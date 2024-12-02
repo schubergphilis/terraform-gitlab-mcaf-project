@@ -180,7 +180,7 @@ resource "gitlab_branch_protection" "default" {
 # Pipeline schedule
 ################################################################################
 resource "gitlab_pipeline_schedule" "default" {
-  count       = var.pipeline_schedule != null ? 1 : 0
+  count       = var.pipeline_schedule.cron != null ? 1 : 0
   project     = gitlab_project.default.id
   description = var.pipeline_schedule.description
   ref         = var.pipeline_schedule.ref
