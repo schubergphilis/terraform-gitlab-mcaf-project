@@ -5,19 +5,18 @@ Terraform module to create and manage a GitLab project.
 IMPORTANT: We do not pin modules to versions in our examples. We highly recommend that in your code you pin the version to the exact version you are using so that your infrastructure remains stable.
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
-| Name                                                                     | Version   |
-| ------------------------------------------------------------------------ | --------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.3.0  |
-| <a name="requirement_gitlab"></a> [gitlab](#requirement_gitlab)          | >= 16.0.0 |
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 16.0.0 |
 
 ## Providers
 
-| Name                                                      | Version   |
-| --------------------------------------------------------- | --------- |
-| <a name="provider_gitlab"></a> [gitlab](#provider_gitlab) | >= 16.0.0 |
+| Name | Version |
+|------|---------|
+| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 16.0.0 |
 
 ## Modules
 
@@ -25,19 +24,19 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                                  | Type        |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection)                   | resource    |
-| [gitlab_pipeline_schedule.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/pipeline_schedule)                   | resource    |
-| [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project)                                       | resource    |
-| [gitlab_project_approval_rule.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_approval_rule)           | resource    |
-| [gitlab_project_level_mr_approvals.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_level_mr_approvals) | resource    |
-| [gitlab_project_variable.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_variable)                     | resource    |
-| [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                                        | data source |
-| [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                                         | data source |
-| [gitlab_group.project_approval_rule_groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group)                   | data source |
-| [gitlab_user.project_approval_rule_users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user)                      | data source |
-| [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user)                                            | data source |
+| Name | Type |
+|------|------|
+| [gitlab_branch_protection.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/branch_protection) | resource |
+| [gitlab_pipeline_schedule.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/pipeline_schedule) | resource |
+| [gitlab_project.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
+| [gitlab_project_approval_rule.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_approval_rule) | resource |
+| [gitlab_project_level_mr_approvals.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_level_mr_approvals) | resource |
+| [gitlab_project_variable.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_variable) | resource |
+| [gitlab_group.default](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_group.groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_group.project_approval_rule_groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_user.project_approval_rule_users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
+| [gitlab_user.users](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/user) | data source |
 
 ## Inputs
 
@@ -47,6 +46,8 @@ No modules.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The namespace (group or user) of the project | `string` | n/a | yes |
 | <a name="input_approvals_before_merge"></a> [approvals\_before\_merge](#input\_approvals\_before\_merge) | Number of merge request approvals required for merging | `number` | `1` | no |
 | <a name="input_branch_protection"></a> [branch\_protection](#input\_branch\_protection) | Branch protection settings | <pre>map(object({<br>    allow_force_push             = optional(bool, false)<br>    code_owner_approval_required = optional(bool, false)<br>    merge_access_level           = optional(string, "developer")<br>    push_access_level            = optional(string, "no one")<br>    unprotect_access_level       = optional(string)<br><br>    groups_allowed_to_merge     = optional(list(string), [])<br>    groups_allowed_to_push      = optional(list(string), [])<br>    groups_allowed_to_unprotect = optional(list(string), [])<br><br>    users_allowed_to_merge     = optional(list(string), [])<br>    users_allowed_to_push      = optional(list(string), [])<br>    users_allowed_to_unprotect = optional(list(string), [])<br>  }))</pre> | `{}` | no |
+| <a name="input_ci_config_path"></a> [ci\_config\_path](#input\_ci\_config\_path) | Custom Path to CI config file. | `string` | `".ci-gitlab.yml"` | no |
+| <a name="input_ci_default_git_depth "></a> [ci\_default\_git\_depth ](#input\_ci\_default\_git\_depth ) | Default number of revisions for shallow cloning. | `number` | `1` | no |
 | <a name="input_cicd_variables"></a> [cicd\_variables](#input\_cicd\_variables) | CICD variables accessable during pipeline runs. | <pre>map(object({<br>    value         = string<br>    protected     = bool<br>    masked        = optional(bool, false)<br>    raw           = optional(bool, false)<br>    variable_type = optional(string, "env_var")<br>  }))</pre> | `{}` | no |
 | <a name="input_commit_message_regex"></a> [commit\_message\_regex](#input\_commit\_message\_regex) | A regex pattern that a commit message must match in order to be accepted. | `string` | `null` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The default branch for the project | `string` | `"main"` | no |
@@ -69,10 +70,9 @@ No modules.
 
 ## Outputs
 
-| Name                                                                                         | Description                        |
-| -------------------------------------------------------------------------------------------- | ---------------------------------- |
-| <a name="output_id"></a> [id](#output_id)                                                    | GitLab project id                  |
-| <a name="output_path"></a> [path](#output_path)                                              | GitLab project path                |
-| <a name="output_path_with_namespace"></a> [path_with_namespace](#output_path_with_namespace) | GitLab project path with namespace |
-
+| Name | Description |
+|------|-------------|
+| <a name="output_id"></a> [id](#output\_id) | GitLab project id |
+| <a name="output_path"></a> [path](#output\_path) | GitLab project path |
+| <a name="output_path_with_namespace"></a> [path\_with\_namespace](#output\_path\_with\_namespace) | GitLab project path with namespace |
 <!-- END_TF_DOCS -->
