@@ -10,7 +10,7 @@ variable "ci_config_path" {
   description = "Custom Path to CI config file."
 }
 
-variable "ci_default_git_depth " {
+variable "ci_default_git_depth" {
   type        = number
   default     = 1
   description = "Default number of revisions for shallow cloning."
