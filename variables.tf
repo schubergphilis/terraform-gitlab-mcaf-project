@@ -197,7 +197,7 @@ variable "wiki_enabled" {
 variable "pipeline_schedule" {
   type = object({
     cron           = string
-    activate       = optiona(bool)
+    activate       = optional(bool)
     cron_timezone  = optional(string)
     description    = optional(string)
     take_ownership = optional(bool)
