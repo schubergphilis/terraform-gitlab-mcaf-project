@@ -23,6 +23,8 @@ locals {
   groups = toset(flatten([for branch, settings in local.branch_protection :
     distinct(concat(settings.groups_allowed_to_merge, settings.groups_allowed_to_push, settings.groups_allowed_to_unprotect))
   ]))
+
+  pipeline_schedule_enabled = var.pipeline_schedule != null ? true : false
 }
 
 ################################################################################
@@ -183,20 +185,13 @@ resource "gitlab_branch_protection" "default" {
 ################################################################################
 
 resource "gitlab_pipeline_schedule" "default" {
-  count  = var.pipeline_schedule.cron != null ? 1 : 0
-  active = var.pipeline_schedule.active
+  for_each = local.pipeline_schedule_enabled ? { create = true } : {}
 
+  active         = var.pipeline_schedule.active
   project        = gitlab_project.default.id
   description    = var.pipeline_schedule.description
   ref            = var.pipeline_schedule.ref
   cron           = var.pipeline_schedule.cron
   cron_timezone  = var.pipeline_schedule.cron_timezone
   take_ownership = var.pipeline_schedule.take_ownership
-
-  lifecycle {
-    precondition {
-      condition     = can(regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|\\*)$", var.pipeline_schedule.cron))
-      error_message = "The cron expression is not valid. It should be in the format '0 1 * * *'."
-    }
-  }
 }
