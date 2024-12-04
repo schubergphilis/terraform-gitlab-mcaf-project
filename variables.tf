@@ -207,7 +207,7 @@ variable "pipeline_schedule" {
   description = "Pipeline scheduler parameter."
 
   validation {
-    condition     = var.pipeline_schedule != null ? (regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|\\*)$", var.pipeline_schedule.cron)) : true
+    condition     = var.pipeline_schedule != null ? (regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|\\*)$", var.pipeline_schedule.cron)) : null
     error_message = "The cron expression is not valid. It should be in the format '0 1 * * *'."
   }
 }
