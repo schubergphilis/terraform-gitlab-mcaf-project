@@ -181,6 +181,7 @@ resource "gitlab_branch_protection" "default" {
 ################################################################################
 # Pipeline schedule
 ################################################################################
+
 resource "gitlab_pipeline_schedule" "default" {
   count  = var.pipeline_schedule.cron != null ? 1 : 0
   active = var.pipeline_schedule.active

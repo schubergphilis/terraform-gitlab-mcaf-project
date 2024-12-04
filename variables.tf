@@ -196,19 +196,12 @@ variable "wiki_enabled" {
 
 variable "pipeline_schedule" {
   type = object({
+    active         = optional(bool, true)
     cron           = string
-    active         = optional(bool)
-    cron_timezone  = optional(string)
-    description    = optional(string)
-    take_ownership = optional(bool)
-    ref            = optional(string)
+    cron_timezone  = optional(string, "UTC")
+    description    = string
+    ref            = optional(string, "refs/heads/main")
+    take_ownership = optional(bool, false)
   })
-  default = {
-    active         = true
-    cron           = null
-    cron_timezone  = "UTC"
-    description    = null
-    take_ownership = false
-    ref            = "main"
-  }
+  default = null
 }
