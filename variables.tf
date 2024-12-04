@@ -12,7 +12,7 @@ variable "ci_config_path" {
 
 variable "ci_default_git_depth" {
   type        = number
-  default     = 1
+  default     = 3
   description = "Default number of revisions for shallow cloning."
 }
 

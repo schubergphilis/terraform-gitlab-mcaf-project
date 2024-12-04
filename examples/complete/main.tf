@@ -55,7 +55,6 @@ module "test_project" {
   }
 
   pipeline_schedule = {
-    ref         = "main"
     description = "Test schedule"
     cron        = "0 1 * * *"
   }
