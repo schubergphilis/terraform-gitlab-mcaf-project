@@ -6,7 +6,7 @@ variable "approvals_before_merge" {
 
 variable "ci_config_path" {
   type        = string
-  default     = ".ci-gitlab.yml"
+  default     = ".gitlab-ci.yml"
   description = "Custom Path to CI config file."
 }
 
