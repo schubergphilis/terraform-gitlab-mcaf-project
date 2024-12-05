@@ -4,6 +4,18 @@ variable "approvals_before_merge" {
   description = "Number of merge request approvals required for merging"
 }
 
+variable "ci_config_path" {
+  type        = string
+  default     = ".gitlab-ci.yml"
+  description = "Custom Path to CI config file."
+}
+
+variable "ci_default_git_depth" {
+  type        = number
+  default     = 3
+  description = "Default number of revisions for shallow cloning."
+}
+
 variable "branch_protection" {
   type = map(object({
     allow_force_push             = optional(bool, false)
@@ -180,4 +192,22 @@ variable "wiki_enabled" {
   type        = bool
   default     = false
   description = "Enable wiki for the project"
+}
+
+variable "pipeline_schedule" {
+  type = object({
+    active         = optional(bool, true)
+    cron           = string
+    cron_timezone  = optional(string, "UTC")
+    description    = string
+    ref            = optional(string, "refs/heads/main")
+    take_ownership = optional(bool, false)
+  })
+  default     = null
+  description = "Pipeline scheduler parameter."
+
+  validation {
+    condition     = var.pipeline_schedule != null ? can((regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|\\*)$", var.pipeline_schedule.cron))) : true
+    error_message = "The cron expression is not valid. It should be in the format '0 1 * * *'."
+  }
 }

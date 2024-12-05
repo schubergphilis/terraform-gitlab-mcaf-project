@@ -54,6 +54,11 @@ module "test_project" {
     protected_branches                = ["main"]
   }
 
+  pipeline_schedule = {
+    description = "Test schedule"
+    cron        = "0 1 * * *"
+  }
+
   cicd_variables = {
     api_token = {
       value     = "123"

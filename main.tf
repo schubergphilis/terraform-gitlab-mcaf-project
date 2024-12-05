@@ -23,6 +23,8 @@ locals {
   groups = toset(flatten([for branch, settings in local.branch_protection :
     distinct(concat(settings.groups_allowed_to_merge, settings.groups_allowed_to_push, settings.groups_allowed_to_unprotect))
   ]))
+
+  pipeline_schedule_enabled = var.pipeline_schedule != null ? true : false
 }
 
 ################################################################################
@@ -36,6 +38,8 @@ data "gitlab_group" "default" {
 resource "gitlab_project" "default" {
   name                                             = var.name
   approvals_before_merge                           = var.use_group_settings ? null : var.approvals_before_merge
+  ci_config_path                                   = var.ci_config_path
+  ci_default_git_depth                             = var.ci_default_git_depth
   default_branch                                   = var.default_branch
   description                                      = var.description
   initialize_with_readme                           = var.initialize_with_readme
@@ -174,4 +178,20 @@ resource "gitlab_branch_protection" "default" {
       group_id = data.gitlab_group.groups[allowed_to_unprotect.value].id
     }
   }
+}
+
+################################################################################
+# Pipeline schedule
+################################################################################
+
+resource "gitlab_pipeline_schedule" "default" {
+  for_each = local.pipeline_schedule_enabled ? { create = true } : {}
+
+  active         = var.pipeline_schedule.active
+  project        = gitlab_project.default.id
+  description    = var.pipeline_schedule.description
+  ref            = var.pipeline_schedule.ref
+  cron           = var.pipeline_schedule.cron
+  cron_timezone  = var.pipeline_schedule.cron_timezone
+  take_ownership = var.pipeline_schedule.take_ownership
 }
