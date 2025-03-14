@@ -97,7 +97,7 @@ resource "gitlab_project_approval_rule" "default" {
   project                           = gitlab_project.default.id
   name                              = var.project_approval_rule.name
   approvals_required                = var.project_approval_rule.approvals_required
-  applies_to_all_protected_branches = var.project_approval_rule.applies_to_all_protected_branches
+  applies_to_all_protected_branches = try(var.project_approval_rule.protected_branches, null) == null ? var.project_approval_rule.applies_to_all_protected_branches : null
   protected_branch_ids              = try([for branch in var.project_approval_rule.protected_branches : gitlab_branch_protection.default[branch].branch_protection_id], null)
   user_ids                          = try([for user in var.project_approval_rule.users : data.gitlab_user.project_approval_rule_users[user].id], null)
   group_ids                         = try([for group in var.project_approval_rule.groups : data.gitlab_group.project_approval_rule_groups[group].id], null)
