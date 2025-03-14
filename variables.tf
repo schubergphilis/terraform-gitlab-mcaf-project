@@ -4,6 +4,12 @@ variable "approvals_before_merge" {
   description = "Number of merge request approvals required for merging"
 }
 
+variable "archive_on_destroy" {
+  type        = bool
+  default     = false
+  description = "Set to true to archive the project instead of deleting on destroy. If set to true it will entire omit the DELETE operation."
+}
+
 variable "ci_config_path" {
   type        = string
   default     = ".gitlab-ci.yml"
