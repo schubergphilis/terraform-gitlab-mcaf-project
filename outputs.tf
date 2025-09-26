@@ -1,14 +1,29 @@
-output "path_with_namespace" {
-  value       = gitlab_project.default.path_with_namespace
-  description = "GitLab project path with namespace"
+output "id" {
+  value       = gitlab_project.default.id
+  description = "Project ID"
+}
+
+output "http_url_to_repo" {
+  value       = gitlab_project.default.http_url_to_repo
+  description = "HTTP URL to the repository"
 }
 
 output "path" {
   value       = gitlab_project.default.path
-  description = "GitLab project path"
+  description = "Project path"
 }
 
-output "id" {
-  value       = gitlab_project.default.id
-  description = "GitLab project id"
+output "path_with_namespace" {
+  value       = gitlab_project.default.path_with_namespace
+  description = "Project path with namespace"
+}
+
+output "ssh_url_to_repo" {
+  value       = gitlab_project.default.ssh_url_to_repo
+  description = "SSH URL to the repository"
+}
+
+output "web_url" {
+  value       = gitlab_project.default.web_url
+  description = "Project web URL"
 }
