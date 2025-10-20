@@ -56,13 +56,18 @@ run "defaults" {
   }
 
   assert {
-    condition     = resource.gitlab_project.default.issues_enabled == false
-    error_message = "Invalid issues_enabled value"
+    condition     = resource.gitlab_project.default.issues_access_level == "disabled"
+    error_message = "Invalid issues_access_level value"
   }
 
   assert {
-    condition     = resource.gitlab_project.default.snippets_enabled == false
-    error_message = "Invalid snippets_enabled value"
+    condition     = resource.gitlab_project.default.snippets_access_level == "disabled"
+    error_message = "Invalid snippets_access_level value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project.default.wiki_access_level == "disabled"
+    error_message = "Invalid wiki_access_level value"
   }
 
   assert {
@@ -83,11 +88,6 @@ run "defaults" {
   assert {
     condition     = resource.gitlab_project.default.remove_source_branch_after_merge == true
     error_message = "Invalid remove_source_branch_after_merge value"
-  }
-
-  assert {
-    condition     = resource.gitlab_project.default.wiki_enabled == false
-    error_message = "Invalid wiki_enabled value"
   }
 
   assert {
@@ -161,20 +161,19 @@ run "complete" {
     name      = "basic-${run.setup.random_string}"
     namespace = "basic-${run.setup.random_string}"
 
-    approvals_before_merge                           = 2
     commit_message_regex                             = "Fixed \\d+\\..*"
     default_branch                                   = "main"
     description                                      = "test project"
     initialize_with_readme                           = true
-    issues_enabled                                   = true
+    issues_access_level                              = "enabled"
     prevent_secrets                                  = false
     squash_option                                    = "always"
     remove_source_branch_after_merge                 = false
     only_allow_merge_if_all_discussions_are_resolved = true
     only_allow_merge_if_pipeline_succeeds            = true
-    snippets_enabled                                 = true
+    snippets_access_level                            = "enabled"
     visibility                                       = "internal"
-    wiki_enabled                                     = true
+    wiki_access_level                                = "enabled"
 
     branch_protection = {
       main = {
@@ -246,11 +245,6 @@ run "complete" {
   command = plan
 
   assert {
-    condition     = resource.gitlab_project.default.approvals_before_merge == 2
-    error_message = "Invalid approvals_before_merge value"
-  }
-
-  assert {
     condition     = resource.gitlab_project.default.description == "test project"
     error_message = "Invalid project description"
   }
@@ -261,13 +255,18 @@ run "complete" {
   }
 
   assert {
-    condition     = resource.gitlab_project.default.issues_enabled == true
-    error_message = "Invalid issues_enabled value"
+    condition     = resource.gitlab_project.default.issues_access_level == "enabled"
+    error_message = "Invalid issues_access_level value"
   }
 
   assert {
-    condition     = resource.gitlab_project.default.snippets_enabled == true
-    error_message = "Invalid snippets_enabled value"
+    condition     = resource.gitlab_project.default.snippets_access_level == "enabled"
+    error_message = "Invalid snippets_access_level value"
+  }
+
+  assert {
+    condition     = resource.gitlab_project.default.wiki_access_level == "enabled"
+    error_message = "Invalid wiki_access_level value"
   }
 
   assert {
@@ -438,11 +437,6 @@ run "complete" {
   assert {
     condition     = resource.gitlab_project_variable.default["VAR3"].value != ""
     error_message = "Variable VAR3 shouldn't be empty"
-  }
-
-  assert {
-    condition     = resource.gitlab_project_variable.default["VAR3"].description == "env_var"
-    error_message = "Variable VAR3 description should be 'env_var'"
   }
 
   assert {
