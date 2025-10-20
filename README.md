@@ -10,13 +10,13 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 16.0.0 |
+| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 17.10.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 16.0.0 |
+| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 17.10.0 |
 
 ## Modules
 
@@ -48,7 +48,7 @@ No modules.
 | <a name="input_branch_protection"></a> [branch\_protection](#input\_branch\_protection) | Branch protection settings | <pre>map(object({<br/>    allow_force_push             = optional(bool, false)<br/>    code_owner_approval_required = optional(bool, false)<br/>    merge_access_level           = optional(string, "developer")<br/>    push_access_level            = optional(string, "no one")<br/>    unprotect_access_level       = optional(string)<br/><br/>    groups_allowed_to_merge     = optional(list(string), [])<br/>    groups_allowed_to_push      = optional(list(string), [])<br/>    groups_allowed_to_unprotect = optional(list(string), [])<br/><br/>    users_allowed_to_merge     = optional(list(string), [])<br/>    users_allowed_to_push      = optional(list(string), [])<br/>    users_allowed_to_unprotect = optional(list(string), [])<br/>  }))</pre> | `{}` | no |
 | <a name="input_ci_config_path"></a> [ci\_config\_path](#input\_ci\_config\_path) | Custom Path to CI config file. | `string` | `".gitlab-ci.yml"` | no |
 | <a name="input_ci_default_git_depth"></a> [ci\_default\_git\_depth](#input\_ci\_default\_git\_depth) | Default number of revisions for shallow cloning. | `number` | `3` | no |
-| <a name="input_cicd_variables"></a> [cicd\_variables](#input\_cicd\_variables) | CICD variables accessable during pipeline runs. | <pre>map(object({<br/>    value         = string<br/>    protected     = bool<br/>    masked        = optional(bool, false)<br/>    raw           = optional(bool, false)<br/>    variable_type = optional(string, "env_var")<br/>  }))</pre> | `{}` | no |
+| <a name="input_cicd_variables"></a> [cicd\_variables](#input\_cicd\_variables) | CICD variables accessable during pipeline runs. | <pre>map(object({<br/>    value         = string<br/>    protected     = bool<br/>    description   = optional(string, null)<br/>    hidden        = optional(bool, false)<br/>    masked        = optional(bool, false)<br/>    raw           = optional(bool, false)<br/>    variable_type = optional(string, "env_var")<br/>  }))</pre> | `{}` | no |
 | <a name="input_commit_message_regex"></a> [commit\_message\_regex](#input\_commit\_message\_regex) | A regex pattern that a commit message must match in order to be accepted. | `string` | `null` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The default branch for the project | `string` | `"main"` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description for the GitLab project | `string` | `null` | no |
