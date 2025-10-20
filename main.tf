@@ -67,10 +67,11 @@ resource "gitlab_project_variable" "default" {
   key           = each.key
   value         = each.value.value
   protected     = each.value.protected
+  hidden        = each.value.hidden
   masked        = each.value.masked
   raw           = each.value.raw
   variable_type = each.value.variable_type
-  description   = each.value.variable_type
+  description   = coalesce(each.value.description, each.value.variable_type)
 }
 
 resource "gitlab_project_level_mr_approvals" "default" {
