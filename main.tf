@@ -37,21 +37,20 @@ data "gitlab_group" "default" {
 
 resource "gitlab_project" "default" {
   name                                             = var.name
-  approvals_before_merge                           = var.use_group_settings ? null : var.approvals_before_merge
   ci_config_path                                   = var.ci_config_path
   ci_default_git_depth                             = var.ci_default_git_depth
   default_branch                                   = var.default_branch
   description                                      = var.description
   initialize_with_readme                           = var.initialize_with_readme
-  issues_enabled                                   = var.issues_enabled
+  issues_access_level                              = var.issues_access_level
   namespace_id                                     = data.gitlab_group.default.id
   only_allow_merge_if_all_discussions_are_resolved = var.only_allow_merge_if_all_discussions_are_resolved
   only_allow_merge_if_pipeline_succeeds            = var.only_allow_merge_if_pipeline_succeeds
   remove_source_branch_after_merge                 = var.remove_source_branch_after_merge
-  snippets_enabled                                 = var.snippets_enabled
+  snippets_access_level                            = var.snippets_access_level
   squash_option                                    = var.squash_option
   visibility_level                                 = var.visibility
-  wiki_enabled                                     = var.wiki_enabled
+  wiki_access_level                                = var.wiki_access_level
 
   push_rules {
     commit_message_regex    = var.commit_message_regex
@@ -67,10 +66,11 @@ resource "gitlab_project_variable" "default" {
   key           = each.key
   value         = each.value.value
   protected     = each.value.protected
+  hidden        = each.value.hidden
   masked        = each.value.masked
   raw           = each.value.raw
   variable_type = each.value.variable_type
-  description   = each.value.variable_type
+  description   = each.value.description
 }
 
 resource "gitlab_project_level_mr_approvals" "default" {

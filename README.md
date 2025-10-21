@@ -10,13 +10,13 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 16.0.0 |
+| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | >= 17.10.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 16.0.0 |
+| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 17.10.0 |
 
 ## Modules
 
@@ -44,16 +44,15 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | The name of the project | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The namespace (group or user) of the project | `string` | n/a | yes |
-| <a name="input_approvals_before_merge"></a> [approvals\_before\_merge](#input\_approvals\_before\_merge) | Number of merge request approvals required for merging | `number` | `1` | no |
 | <a name="input_branch_protection"></a> [branch\_protection](#input\_branch\_protection) | Branch protection settings | <pre>map(object({<br/>    allow_force_push             = optional(bool, false)<br/>    code_owner_approval_required = optional(bool, false)<br/>    merge_access_level           = optional(string, "developer")<br/>    push_access_level            = optional(string, "no one")<br/>    unprotect_access_level       = optional(string)<br/><br/>    groups_allowed_to_merge     = optional(list(string), [])<br/>    groups_allowed_to_push      = optional(list(string), [])<br/>    groups_allowed_to_unprotect = optional(list(string), [])<br/><br/>    users_allowed_to_merge     = optional(list(string), [])<br/>    users_allowed_to_push      = optional(list(string), [])<br/>    users_allowed_to_unprotect = optional(list(string), [])<br/>  }))</pre> | `{}` | no |
 | <a name="input_ci_config_path"></a> [ci\_config\_path](#input\_ci\_config\_path) | Custom Path to CI config file. | `string` | `".gitlab-ci.yml"` | no |
 | <a name="input_ci_default_git_depth"></a> [ci\_default\_git\_depth](#input\_ci\_default\_git\_depth) | Default number of revisions for shallow cloning. | `number` | `3` | no |
-| <a name="input_cicd_variables"></a> [cicd\_variables](#input\_cicd\_variables) | CICD variables accessable during pipeline runs. | <pre>map(object({<br/>    value         = string<br/>    protected     = bool<br/>    masked        = optional(bool, false)<br/>    raw           = optional(bool, false)<br/>    variable_type = optional(string, "env_var")<br/>  }))</pre> | `{}` | no |
+| <a name="input_cicd_variables"></a> [cicd\_variables](#input\_cicd\_variables) | CICD variables accessable during pipeline runs. | <pre>map(object({<br/>    value         = string<br/>    protected     = bool<br/>    description   = optional(string, null)<br/>    hidden        = optional(bool, false)<br/>    masked        = optional(bool, false)<br/>    raw           = optional(bool, false)<br/>    variable_type = optional(string, "env_var")<br/>  }))</pre> | `{}` | no |
 | <a name="input_commit_message_regex"></a> [commit\_message\_regex](#input\_commit\_message\_regex) | A regex pattern that a commit message must match in order to be accepted. | `string` | `null` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The default branch for the project | `string` | `"main"` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description for the GitLab project | `string` | `null` | no |
 | <a name="input_initialize_with_readme"></a> [initialize\_with\_readme](#input\_initialize\_with\_readme) | Create default branch with first commit containing a README.md file | `bool` | `true` | no |
-| <a name="input_issues_enabled"></a> [issues\_enabled](#input\_issues\_enabled) | Enable issue tracking for the project | `bool` | `false` | no |
+| <a name="input_issues_access_level"></a> [issues\_access\_level](#input\_issues\_access\_level) | Set the issues access level. Valid values are "disabled", "private", "enabled". | `string` | `"disabled"` | no |
 | <a name="input_merge_request_approval_rule"></a> [merge\_request\_approval\_rule](#input\_merge\_request\_approval\_rule) | Allows to manage the lifecycle of a Merge Request-level approval rule. | <pre>object({<br/>    disable_overriding_approvers_per_merge_request = optional(bool, false)<br/>    merge_requests_author_approval                 = optional(bool, false)<br/>    merge_requests_disable_committers_approval     = optional(bool, false)<br/>    reset_approvals_on_push                        = optional(bool, true)<br/>  })</pre> | `{}` | no |
 | <a name="input_only_allow_merge_if_all_discussions_are_resolved"></a> [only\_allow\_merge\_if\_all\_discussions\_are\_resolved](#input\_only\_allow\_merge\_if\_all\_discussions\_are\_resolved) | Set to true if you want allow merges only if all discussions are resolved. | `bool` | `false` | no |
 | <a name="input_only_allow_merge_if_pipeline_succeeds"></a> [only\_allow\_merge\_if\_pipeline\_succeeds](#input\_only\_allow\_merge\_if\_pipeline\_succeeds) | Set to true if you want allow merges only if a pipeline succeeds. | `bool` | `false` | no |
@@ -62,11 +61,10 @@ No modules.
 | <a name="input_project_approval_rule"></a> [project\_approval\_rule](#input\_project\_approval\_rule) | Allows to manage the lifecycle of a project-level approval rule. | <pre>object({<br/>    name                              = optional(string, "project approval rule")<br/>    applies_to_all_protected_branches = optional(bool, true)<br/>    approvals_required                = optional(number, 1)<br/>    groups                            = optional(list(string), [])<br/>    protected_branches                = optional(list(string), null)<br/>    users                             = optional(list(string), [])<br/>  })</pre> | `{}` | no |
 | <a name="input_reject_unsigned_commits"></a> [reject\_unsigned\_commits](#input\_reject\_unsigned\_commits) | GitLab rejects any unsigned commits. | `bool` | `true` | no |
 | <a name="input_remove_source_branch_after_merge"></a> [remove\_source\_branch\_after\_merge](#input\_remove\_source\_branch\_after\_merge) | Enable "Delete source branch" option by default for all new merge requests. | `bool` | `true` | no |
-| <a name="input_snippets_enabled"></a> [snippets\_enabled](#input\_snippets\_enabled) | Enable snippets for the project | `bool` | `false` | no |
+| <a name="input_snippets_access_level"></a> [snippets\_access\_level](#input\_snippets\_access\_level) | Set the snippets access level. Valid values are "disabled", "private", "enabled". | `string` | `"disabled"` | no |
 | <a name="input_squash_option"></a> [squash\_option](#input\_squash\_option) | Squash commits when merge request | `string` | `"default_off"` | no |
-| <a name="input_use_group_settings"></a> [use\_group\_settings](#input\_use\_group\_settings) | Ignore settings that can also be set on a group level to prevent conflicts | `bool` | `false` | no |
 | <a name="input_visibility"></a> [visibility](#input\_visibility) | Set the GitLab project as public, private or internal | `string` | `"private"` | no |
-| <a name="input_wiki_enabled"></a> [wiki\_enabled](#input\_wiki\_enabled) | Enable wiki for the project | `bool` | `false` | no |
+| <a name="input_wiki_access_level"></a> [wiki\_access\_level](#input\_wiki\_access\_level) | Set the wiki access level. Valid values are "disabled", "private", "enabled". | `string` | `"disabled"` | no |
 
 ## Outputs
 

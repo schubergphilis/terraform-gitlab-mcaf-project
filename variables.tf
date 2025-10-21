@@ -1,9 +1,3 @@
-variable "approvals_before_merge" {
-  type        = number
-  default     = 1
-  description = "Number of merge request approvals required for merging"
-}
-
 variable "ci_config_path" {
   type        = string
   default     = ".gitlab-ci.yml"
@@ -69,6 +63,8 @@ variable "cicd_variables" {
   type = map(object({
     value         = string
     protected     = bool
+    description   = optional(string, null)
+    hidden        = optional(bool, false)
     masked        = optional(bool, false)
     raw           = optional(bool, false)
     variable_type = optional(string, "env_var")
@@ -108,10 +104,15 @@ variable "initialize_with_readme" {
   description = "Create default branch with first commit containing a README.md file"
 }
 
-variable "issues_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable issue tracking for the project"
+variable "issues_access_level" {
+  type        = string
+  default     = "disabled"
+  description = "Set the issues access level. Valid values are \"disabled\", \"private\", \"enabled\"."
+
+  validation {
+    condition     = contains(["disabled", "private", "enabled"], var.issues_access_level)
+    error_message = "Invalid input: Valid values are \"disabled\", \"private\", \"enabled\"."
+  }
 }
 
 variable "name" {
@@ -154,10 +155,15 @@ variable "remove_source_branch_after_merge" {
   description = "Enable \"Delete source branch\" option by default for all new merge requests."
 }
 
-variable "snippets_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable snippets for the project"
+variable "snippets_access_level" {
+  type        = string
+  default     = "disabled"
+  description = "Set the snippets access level. Valid values are \"disabled\", \"private\", \"enabled\"."
+
+  validation {
+    condition     = contains(["disabled", "private", "enabled"], var.snippets_access_level)
+    error_message = "Invalid input: Valid values are \"disabled\", \"private\", \"enabled\"."
+  }
 }
 
 variable "squash_option" {
@@ -171,12 +177,6 @@ variable "squash_option" {
   }
 }
 
-variable "use_group_settings" {
-  type        = bool
-  default     = false
-  description = "Ignore settings that can also be set on a group level to prevent conflicts"
-}
-
 variable "visibility" {
   type        = string
   default     = "private"
@@ -188,10 +188,15 @@ variable "visibility" {
   }
 }
 
-variable "wiki_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable wiki for the project"
+variable "wiki_access_level" {
+  type        = string
+  default     = "disabled"
+  description = "Set the wiki access level. Valid values are \"disabled\", \"private\", \"enabled\"."
+
+  validation {
+    condition     = contains(["disabled", "private", "enabled"], var.wiki_access_level)
+    error_message = "Invalid input: Valid values are \"disabled\", \"private\", \"enabled\"."
+  }
 }
 
 variable "pipeline_schedule" {
@@ -207,7 +212,7 @@ variable "pipeline_schedule" {
   description = "Pipeline scheduler parameter."
 
   validation {
-    condition     = var.pipeline_schedule != null ? can((regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|\\*)$", var.pipeline_schedule.cron))) : true
+    condition     = var.pipeline_schedule != null ? can((regex("^([0-5]?[0-9]|\\*) ([0-9]|1[0-9]|2[0-3]|\\*) ([1-9]|[12][0-9]|3[01]|\\*) ([1-9]|1[0-2]|\\*) ([0-6]|[0-6]\\-[0-6]|\\*)$", var.pipeline_schedule.cron))) : true
     error_message = "The cron expression is not valid. It should be in the format '0 1 * * *'."
   }
 }

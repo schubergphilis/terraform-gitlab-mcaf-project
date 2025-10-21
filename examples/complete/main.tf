@@ -6,18 +6,17 @@ module "test_project" {
   name      = "test"
   namespace = "test"
 
-  approvals_before_merge                           = 2
   commit_message_regex                             = "Fixed \\d+\\..*"
   default_branch                                   = "main"
   description                                      = "test project"
   initialize_with_readme                           = true
-  issues_enabled                                   = true
-  snippets_enabled                                 = true
+  issues_access_level                              = "enabled"
+  snippets_access_level                            = "enabled"
   squash_option                                    = "always"
   visibility                                       = "internal"
   only_allow_merge_if_all_discussions_are_resolved = true
   only_allow_merge_if_pipeline_succeeds            = true
-  wiki_enabled                                     = true
+  wiki_access_level                                = "enabled"
 
   branch_protection = {
     main = {
