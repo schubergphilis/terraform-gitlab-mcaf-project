@@ -121,37 +121,37 @@ run "defaults" {
   }
 
   assert {
-    condition     = resource.gitlab_project_approval_rule.default.approvals_required == 1
+    condition     = resource.gitlab_project_approval_rule.default[0].approvals_required == 1
     error_message = "Invalid approvals_required value"
   }
 
   assert {
-    condition     = resource.gitlab_project_approval_rule.default.name == "project approval rule"
+    condition     = resource.gitlab_project_approval_rule.default[0].name == "project approval rule"
     error_message = "Invalid project approval rule name"
   }
 
   assert {
-    condition     = resource.gitlab_project_approval_rule.default.applies_to_all_protected_branches == true
+    condition     = resource.gitlab_project_approval_rule.default[0].applies_to_all_protected_branches == true
     error_message = "Invalid applies_to_all_protected_branches value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.disable_overriding_approvers_per_merge_request == false
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].disable_overriding_approvers_per_merge_request == false
     error_message = "Invalid disable_overriding_approvers_per_merge_request value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_author_approval == false
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].merge_requests_author_approval == false
     error_message = "Invalid merge_requests_author_approval value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_disable_committers_approval == false
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].merge_requests_disable_committers_approval == false
     error_message = "Invalid merge_requests_disable_committers_approval value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.reset_approvals_on_push == true
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].reset_approvals_on_push == true
     error_message = "Invalid reset_approvals_on_push value"
   }
 }
@@ -355,32 +355,32 @@ run "complete" {
   }
 
   assert {
-    condition     = resource.gitlab_project_approval_rule.default.approvals_required == 10
+    condition     = resource.gitlab_project_approval_rule.default[0].approvals_required == 10
     error_message = "Invalid approvals_required value"
   }
 
   assert {
-    condition     = resource.gitlab_project_approval_rule.default.applies_to_all_protected_branches == false
+    condition     = resource.gitlab_project_approval_rule.default[0].applies_to_all_protected_branches == false
     error_message = "Invalid applies_to_all_protected_branches value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.disable_overriding_approvers_per_merge_request == true
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].disable_overriding_approvers_per_merge_request == true
     error_message = "Invalid disable_overriding_approvers_per_merge_request value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_author_approval == true
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].merge_requests_author_approval == true
     error_message = "Invalid merge_requests_author_approval value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.merge_requests_disable_committers_approval == true
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].merge_requests_disable_committers_approval == true
     error_message = "Invalid merge_requests_disable_committers_approval value"
   }
 
   assert {
-    condition     = resource.gitlab_project_level_mr_approvals.default.reset_approvals_on_push == false
+    condition     = resource.gitlab_project_level_mr_approvals.default[0].reset_approvals_on_push == false
     error_message = "Invalid reset_approvals_on_push value"
   }
 
