@@ -98,6 +98,24 @@ variable "description" {
   description = "A description for the GitLab project"
 }
 
+variable "import_url" {
+  type        = string
+  description = "Git URL to a repository to be imported"
+  default     = null
+}
+
+variable "import_url_password" {
+  type        = string
+  description = "Password for the `import_url`"
+  default     = null
+}
+
+variable "import_url_username" {
+  type        = string
+  description = "Username for the `import_url`"
+  default     = null
+}
+
 variable "initialize_with_readme" {
   type        = bool
   default     = true
@@ -113,6 +131,32 @@ variable "issues_access_level" {
     condition     = contains(["disabled", "private", "enabled"], var.issues_access_level)
     error_message = "Invalid input: Valid values are \"disabled\", \"private\", \"enabled\"."
   }
+}
+
+variable "mirror" {
+  type        = bool
+  description = "Set to true if you want to create a mirror repository"
+  default     = false
+  nullable    = false
+
+  validation {
+    condition     = var.mirror == false || (var.mirror == true && var.import_url != null)
+    error_message = "import_url must be set when mirror is true."
+  }
+}
+
+variable "mirror_overwrites_diverged_branches" {
+  type        = bool
+  description = "If true, diverged branches will be overwritten during mirroring"
+  default     = true
+  nullable    = false
+}
+
+variable "mirror_trigger_builds" {
+  type        = bool
+  description = "If true, a pipeline will be triggered when a mirror update occurs"
+  default     = true
+  nullable    = false
 }
 
 variable "name" {

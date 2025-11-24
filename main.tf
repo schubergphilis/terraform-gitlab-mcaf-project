@@ -41,8 +41,14 @@ resource "gitlab_project" "default" {
   ci_default_git_depth                             = var.ci_default_git_depth
   default_branch                                   = var.default_branch
   description                                      = var.description
-  initialize_with_readme                           = var.initialize_with_readme
+  import_url                                       = var.import_url
+  import_url_password                              = var.import_url_password
+  import_url_username                              = var.import_url_username
+  initialize_with_readme                           = var.import_url != null ? null : var.initialize_with_readme
   issues_access_level                              = var.issues_access_level
+  mirror                                           = var.mirror ? true : null # We cannot use false here, so either we set true or null
+  mirror_trigger_builds                            = var.mirror ? var.mirror_trigger_builds : null
+  mirror_overwrites_diverged_branches              = var.mirror ? var.mirror_overwrites_diverged_branches : null
   namespace_id                                     = data.gitlab_group.default.id
   only_allow_merge_if_all_discussions_are_resolved = var.only_allow_merge_if_all_discussions_are_resolved
   only_allow_merge_if_pipeline_succeeds            = var.only_allow_merge_if_pipeline_succeeds
@@ -74,6 +80,9 @@ resource "gitlab_project_variable" "default" {
 }
 
 resource "gitlab_project_level_mr_approvals" "default" {
+  # Do not configure approvals if we are mirroring from another repository and overwriting diverged branches.
+  count = var.mirror && var.mirror_overwrites_diverged_branches ? 0 : 1
+
   project                                        = gitlab_project.default.id
   reset_approvals_on_push                        = var.merge_request_approval_rule.reset_approvals_on_push
   disable_overriding_approvers_per_merge_request = var.merge_request_approval_rule.disable_overriding_approvers_per_merge_request
@@ -94,6 +103,9 @@ data "gitlab_group" "project_approval_rule_groups" {
 }
 
 resource "gitlab_project_approval_rule" "default" {
+  # Do not configure approvals if we are mirroring from another repository and overwriting diverged branches.
+  count = var.mirror && var.mirror_overwrites_diverged_branches ? 0 : 1
+
   project                           = gitlab_project.default.id
   name                              = var.project_approval_rule.name
   approvals_required                = var.project_approval_rule.approvals_required
@@ -120,7 +132,8 @@ data "gitlab_group" "groups" {
 }
 
 resource "gitlab_branch_protection" "default" {
-  for_each = local.branch_protection
+  # Do not configure branch protection if we are mirroring from another repository and overwriting diverged branches.
+  for_each = var.mirror && var.mirror_overwrites_diverged_branches ? {} : local.branch_protection
 
   #checkov:skip=CKV_GLB_2: False positive, default is true
   allow_force_push             = try(each.value.allow_force_push, false)
