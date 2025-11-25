@@ -193,6 +193,19 @@ variable "reject_unsigned_commits" {
   description = "GitLab rejects any unsigned commits."
 }
 
+variable "project_files" {
+  type = map(object({
+    branch              = optional(string)
+    content             = string
+    encoding            = optional(string, "text")
+    managed             = optional(bool, true)
+    overwrite_on_create = optional(bool, false)
+    skip_ci             = optional(bool, false)
+  }))
+  default     = {}
+  description = "A map of GitLab project files that should be created"
+}
+
 variable "remove_source_branch_after_merge" {
   type        = bool
   default     = true

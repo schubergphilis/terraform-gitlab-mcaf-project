@@ -208,3 +208,47 @@ resource "gitlab_pipeline_schedule" "default" {
   cron_timezone  = var.pipeline_schedule.cron_timezone
   take_ownership = var.pipeline_schedule.take_ownership
 }
+
+################################################################################
+# Files
+################################################################################
+
+# Files created by this resource are fully managed. Any downstream updates will be replaced the
+# next time Terraform runs.
+resource "gitlab_repository_file" "managed" {
+  for_each = { for k, v in var.project_files : k => v if v.managed }
+
+  project               = gitlab_project.default.id
+  file_path             = each.key
+  branch                = coalesce(each.value.branch, gitlab_project.default.default_branch)
+  content               = each.value.content
+  encoding              = each.value.encoding
+  overwrite_on_create   = each.value.overwrite_on_create
+  create_commit_message = "Add ${each.key}${each.value.skip_ci ? " [skip ci]" : ""}"
+  delete_commit_message = "Delete ${each.key}${each.value.skip_ci ? " [skip ci]" : ""}"
+  update_commit_message = "Update ${each.key}${each.value.skip_ci ? " [skip ci]" : ""}"
+
+  lifecycle {
+    ignore_changes = [author_name, author_email]
+  }
+}
+
+# Files created by this resource are a one time action. Any downstream content changes will not be
+# overwritten. This helps to build a repository skeleton where you want some templating.
+resource "gitlab_repository_file" "unmanaged" {
+  for_each = { for k, v in var.project_files : k => v if !v.managed }
+
+  project               = gitlab_project.default.id
+  file_path             = each.key
+  branch                = coalesce(each.value.branch, gitlab_project.default.default_branch)
+  content               = each.value.content
+  encoding              = each.value.encoding
+  overwrite_on_create   = each.value.overwrite_on_create
+  create_commit_message = "Add ${each.key}${each.value.skip_ci ? " [skip ci]" : ""}"
+  delete_commit_message = "Delete ${each.key}${each.value.skip_ci ? " [skip ci]" : ""}"
+  update_commit_message = "Update ${each.key}${each.value.skip_ci ? " [skip ci]" : ""}"
+
+  lifecycle {
+    ignore_changes = [author_name, author_email, content]
+  }
+}
