@@ -1,3 +1,9 @@
+variable "archive_on_destroy" {
+  type        = bool
+  default     = false
+  description = "Archive the project instead of deleting it when the resource is destroyed."
+}
+
 variable "ci_config_path" {
   type        = string
   default     = ".gitlab-ci.yml"
