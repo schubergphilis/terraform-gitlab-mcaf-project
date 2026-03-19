@@ -37,6 +37,7 @@ data "gitlab_group" "default" {
 
 resource "gitlab_project" "default" {
   name                                             = var.name
+  archive_on_destroy                               = var.archive_on_destroy
   ci_config_path                                   = var.ci_config_path
   ci_default_git_depth                             = var.ci_default_git_depth
   default_branch                                   = var.default_branch
