@@ -1,3 +1,9 @@
+<!-- migrate-repo:banner -->
+> [!IMPORTANT]
+> **This repository has moved to [`schubergphilis-ep/terraform-gitlab-mcaf-project`](https://github.com/schubergphilis-ep/terraform-gitlab-mcaf-project).**
+> Please update your references and use the new location for issues, PRs, and contributions.
+<!-- migrate-repo:banner -->
+
 # terraform-gitlab-mcaf-project
 
 Terraform module to create and manage a GitLab project.
